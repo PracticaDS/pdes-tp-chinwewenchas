@@ -4,7 +4,7 @@ import React from 'react';
 import { Board } from './Board';
 
 describe("Board", () => {
-  function createBoard(columnas=6 ,rows=6) {
+  function createBoard(columns=6 ,rows=6) {
     const board = mount(<Board columns={columns} rows={rows} />);
     return board;
   }

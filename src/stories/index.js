@@ -1,4 +1,4 @@
-import '../components/Tablero.storybook'
-import '../components/Ficha.storybook'
+import '../components/Board.storybook'
+import '../components/Square.storybook'
 
 
