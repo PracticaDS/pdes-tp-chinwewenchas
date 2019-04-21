@@ -1,10 +1,6 @@
-.tablero {
+.board {
     display: inline-grid;
-    /*padding: 4vh;*/
+    padding: 4vh;
     align-items: center;
     justify-items: center;
-}
-
-.tablero .ficha {
-   /* margin: 5px;*/
 }

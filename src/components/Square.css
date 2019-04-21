@@ -1,8 +1,7 @@
-.ficha {
+.square {
     font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
     font-size: 60px;
     border: solid 2px white;
-    /*border-radius: 10px;*/
     display: flex;
     align-items: center;
     justify-content: center;
@@ -11,6 +10,6 @@
     background-color: lightsalmon;
 }
 
-.ficha.bocaAbajo {
+.square.empty {
     background-color: #444444;
 }
