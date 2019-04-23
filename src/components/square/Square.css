@@ -1,0 +1,15 @@
+.square {
+    font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
+    font-size: 60px;
+    border: solid 2px white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: lightsalmon;
+}
+
+.square.empty {
+    background-color: #444444;
+}
