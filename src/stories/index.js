@@ -1,4 +1,4 @@
-import '../components/Board.storybook'
-import '../components/Square.storybook'
+import '../components/board/Board.storybook'
+import '../components/square/Square.storybook'
 
 

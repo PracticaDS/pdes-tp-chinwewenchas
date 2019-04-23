@@ -1,11 +1,11 @@
 import React from 'react';
-import { Square } from './Square';
+import { Square } from '../square/Square';
 import _ from 'lodash';
 import './Board.css'
 import { PropTypes } from 'prop-types';
 
 export class Board extends React.Component {
-  
+
   calculateStyle() {
     return {gridTemplateColumns: `repeat(${this.props.columns}, fit-content(120px))`};
   }
@@ -20,7 +20,7 @@ export class Board extends React.Component {
         key={index} />);
     index++;
   }
-} 
+}
     return <div style={this.calculateStyle()} className="board">{squares}</div>
   }
 }
