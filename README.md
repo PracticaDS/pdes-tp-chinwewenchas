@@ -18,3 +18,6 @@ Para crear un branch se debe tener un issue asignado en el [tablero del proyecto
 
 ## Work flow
 Toda linea de codigo que se quiera integrar al branch master debe estar asociado a un issue en el [tablero del proyecto](https://github.com/PracticaDS/pdes-tp-chinwewenchas/projects/1), el branch que se quiera integrar debe tener un nombre de acruerdo a lo descripto en la seccion anterior y se debe realizar un pull request, el cual debe ser revisado y aprobado al menos por una persona.
+
+## Trazabilidad
+Para mantener la trazabilidad entre issues y pull requests, cuando se crea un pull request nuevo se tiene que agregar en la descripcion del mismo un comentario con el numero de issue que resuelve ese pull request, github se encarga de agregar los vinculos entre el issue y el pull request si el comentario es #<numero de issue>, por ejemplo #24.
