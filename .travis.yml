@@ -2,13 +2,27 @@ language: node_js
 
 node_js:
   - "stable"
-  
+
+cache:
+  directories:
+    - node_modules
 script:
-  - "npm test"
+  - "CI=true yarn test"
+  - "yarn build"
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $github_token
+  local_dir: build
+  on:
+    branch: master
 
 notifications:
   email:
     recipients:
       - jfischetti94@gmail.com
+      - alvaropiorno100@gmail.com
+      - garciasmithagustin@gmail.com
     on_success: change
-on_failure: change
+    on_failure: always
