@@ -1,14 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import "./Square.css"
-import PropTypes from 'prop-types';
+import './Square.css'
+import PropTypes from 'prop-types'
 
 export class Square extends React.Component {
-
-
-  render() {
-      return <div className="square empty"></div>;
-    
+  render () {
+    return <div className="square empty" />
   }
 }
 

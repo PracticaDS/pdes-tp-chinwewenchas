@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
-import './App.css';
-import { Board } from './components/board/Board';
-import { storeInstance } from "./store";
-import {Provider} from "react-redux";
+import React, { Component } from 'react'
+import './App.css'
+import { Board } from './components/board/Board'
+import { storeInstance } from './store'
+import { Provider } from 'react-redux'
 
 class App extends Component {
-
-
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.user = {
       ganancias: 0
-    };
+    }
   }
 
-  render() {
+  render () {
     return (
       <Provider store={storeInstance}>
         <div className="App">
@@ -26,8 +24,8 @@ class App extends Component {
           </div>
         </div>
       </Provider>
-    );
+    )
   }
 }
 
-export default App;
+export default App
