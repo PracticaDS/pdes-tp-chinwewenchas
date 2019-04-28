@@ -1,6 +1,5 @@
 import React from 'react';
 import { Square } from '../square/Square';
-import _ from 'lodash';
 import './Board.css'
 import { PropTypes } from 'prop-types';
 
@@ -11,7 +10,7 @@ export class Board extends React.Component {
   }
 
   render() {
-    const squares = new Array();
+    const squares = [];
     var index =0;
    for (var i = 0; i < this.props.rows; i++) {
       for (var z = 0; z < this.props.columns; z++) {

@@ -10,6 +10,14 @@ script:
   - "CI=true yarn test"
   - "yarn build"
 
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $github_token
+  local_dir: build
+  on:
+    branch: master
+
 notifications:
   email:
     recipients:
@@ -18,10 +26,3 @@ notifications:
       - garciasmithagustin@gmail.com
     on_success: change
     on_failure: always
-
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $github_token
-  on:
-    branch: 2-deploy-github-pages

@@ -18,9 +18,9 @@ class App extends Component {
         <header className="App-header">
           <h4>Ganancias: ${ this.user.ganancias }</h4>
         </header>
-        <body>
+        <div>
           <Board columns={ 12 } rows={ 11 }/>
-        </body>
+        </div>
       </div>
     );
   }
