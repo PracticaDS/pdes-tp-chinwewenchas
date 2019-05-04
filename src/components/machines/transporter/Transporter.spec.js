@@ -7,7 +7,7 @@ import { Transporter } from './Transporter';
 describe("transporters", () => {
 	
   it("el componente visual debería tener la clase transporter", () => {
-    const transporter = mount(<Transporter />)
+    const transporter = mount(<Transporter direction = {'left'}/>)
     expect(transporter.find("div").hasClass("transporter")).toBe(true);
   });
 
