@@ -12,7 +12,7 @@ export class Transporter extends React.Component {
     Left: () => material.moveX(-1),
     Right: () => material.moveX(1),
     Down: () => material.moveY(-1),
-    Up: () => material.moveY(-1)
+    Up: () => material.moveY(1)
     
   })
 	
