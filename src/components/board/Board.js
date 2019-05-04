@@ -1,27 +1,29 @@
-import React from 'react';
-import { Square } from '../square/Square';
-import _ from 'lodash';
+import React from 'react'
+import { Square } from '../square/Square'
 import './Board.css'
-import { PropTypes } from 'prop-types';
+import { PropTypes } from 'prop-types'
 
 export class Board extends React.Component {
-
-  calculateStyle() {
-    return {gridTemplateColumns: `repeat(${this.props.columns}, fit-content(120px))`};
+  calculateStyle () {
+    return {
+      gridTemplateColumns: `repeat(${this.props.columns}, fit-content(120px))`
+    }
   }
 
-  render() {
-    const squares = new Array();
-    var index =0;
-   for (var i = 0; i < this.props.rows; i++) {
+  render () {
+    const squares = []
+    var index = 0
+    for (var i = 0; i < this.props.rows; i++) {
       for (var z = 0; z < this.props.columns; z++) {
-    squares.push(<Square
-        id={index}
-        key={index} />);
-    index++;
-  }
-}
-    return <div style={this.calculateStyle()} className="board">{squares}</div>
+        squares.push(<Square id={index} key={index} />)
+        index++
+      }
+    }
+    return (
+      <div style={this.calculateStyle()} className="board">
+        {squares}
+      </div>
+    )
   }
 }
 
