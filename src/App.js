@@ -17,10 +17,10 @@ class App extends Component {
       <Provider store={storeInstance}>
         <div className="App">
           <header className="App-header">
-            <h4>Ganancias: ${ this.user.ganancias }</h4>
+            <h4>Ganancias: ${this.user.ganancias}</h4>
           </header>
           <div>
-            <Board columns={ 12 } rows={ 11 }/>
+            <Board columns={12} rows={11} />
           </div>
         </div>
       </Provider>
