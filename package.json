@@ -5,6 +5,7 @@
   "homepage": "https://practicads.github.io/pdes-tp-chinwewenchas/",
   "dependencies": {
     "@types/lodash": "^4.14.123",
+    "daggy": "^1.4.0",
     "gh-pages": "^2.0.1",
     "lodash": "^4.17.11",
     "react": "^16.8.6",
@@ -22,7 +23,10 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "prettier": "prettier --write --no-semi --single-quote \"src/**/*.js\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,6 +46,19 @@
     "@storybook/react": "^5.0.8",
     "babel-loader": "^8.0.5",
     "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1"
+    "enzyme-adapter-react-16": "^1.12.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-standard": "^4.0.0",
+    "husky": "^2.1.0",
+    "prettier": "1.17.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier && yarn lint:fix && git add . && CI=true yarn test"
+    }
   }
 }
