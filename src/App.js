@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Board } from './components/board/Board'
 import { storeInstance } from './store'
 import { Provider } from 'react-redux'
+import Factory from './components/factory/Factory'
 
 class App extends Component {
   constructor (props) {
@@ -15,14 +15,7 @@ class App extends Component {
   render () {
     return (
       <Provider store={storeInstance}>
-        <div className="App">
-          <header className="App-header">
-            <h4>Ganancias: ${this.user.ganancias}</h4>
-          </header>
-          <div>
-            <Board columns={12} rows={11} />
-          </div>
-        </div>
+        <Factory />
       </Provider>
     )
   }

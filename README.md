@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/PracticaDS/pdes-tp-chinwewenchas.svg?branch=master)](https://travis-ci.org/PracticaDS/pdes-tp-chinwewenchas)
 
 # PracticaDS / pdes-tp-chinwewenchas 
+[LInk](https://docs.google.com/document/d/12tbex_VDmd7ZNWkn5PJQriQ92FbIQGgT91-pa71RNZM/edit) al enunciado
 
 ## Para levantar el server de desarrollo
 ```bash
