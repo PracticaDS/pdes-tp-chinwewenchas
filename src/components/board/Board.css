@@ -3,4 +3,10 @@
     padding: 4vh;
     align-items: center;
     justify-items: center;
+    grid-area: main; 
+}
+.title {
+  text-align: start;
+  margin-left: 8px;
+  color : #ff8300;
 }

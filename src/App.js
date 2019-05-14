@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import { Board } from './components/board/Board'
+import { ToolBox } from './components/toolbox/ToolBox'
 import { storeInstance } from './store'
 import { Provider } from 'react-redux'
 
@@ -8,7 +9,7 @@ class App extends Component {
   constructor (props) {
     super(props)
     this.user = {
-      ganancias: 0
+      incomes: 0
     }
   }
 
@@ -16,12 +17,11 @@ class App extends Component {
     return (
       <Provider store={storeInstance}>
         <div className="App">
-          <header className="App-header">
-            <h4>Ganancias: ${this.user.ganancias}</h4>
-          </header>
-          <div>
-            <Board columns={12} rows={11} />
+          <div className="incomes-container">
+            Ganancias <span className="incomes">${this.user.incomes}</span>
           </div>
+          <ToolBox />
+          <Board columns={12} rows={11} />
         </div>
       </Provider>
     )

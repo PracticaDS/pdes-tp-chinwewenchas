@@ -5,10 +5,19 @@ import PropTypes from 'prop-types'
 
 export class Square extends React.Component {
   render () {
-    return <div className="square empty" />
+    if (this.props.path == null) {
+      return <div className="square" />
+    } else {
+      return (
+        <div className="square">
+          <img src={this.props.path} />
+        </div>
+      )
+    }
   }
 }
 
 Square.propTypes = {
-  id: PropTypes.number
+  id: PropTypes.number,
+  path: PropTypes.string
 }
