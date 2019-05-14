@@ -1,0 +1,26 @@
+.raw-material {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.raw-material:hover {
+  cursor: pointer;
+  background: antiquewhite;
+}
+
+.raw-material-color {
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+  border: 2px solid darkslategrey;
+}
+
+.raw-material-item {
+  margin: 5px;
+}
+
+.raw_material-name {
+  text-transform: uppercase;
+}
