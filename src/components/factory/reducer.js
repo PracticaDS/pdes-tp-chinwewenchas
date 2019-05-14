@@ -10,7 +10,6 @@ import {
   addMachine,
   createFactoryBoard,
   findAndRotateMachine,
-  materialForStarter,
   materialTo,
   tick
 } from './factoryLib'
@@ -20,7 +19,7 @@ const initialState = createFactoryBoard(5)
 export default (state = initialState, action) => {
   switch (action.type) {
     case MATERIAL_FOR_STARTER:
-      return materialForStarter(action.id, action.material, state)
+      return materialTo(action.id, action.material, state)
     case ADD_MACHINE:
       return addMachine(action.position, action.machineType, state)
     case ROTATE:
