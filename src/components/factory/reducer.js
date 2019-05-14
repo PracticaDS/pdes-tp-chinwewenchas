@@ -11,15 +11,21 @@ import {
   createFactoryBoard,
   findAndRotateMachine,
   materialTo,
-  tick
+  tick,
+  updatePositionWith
 } from './factoryLib'
+import { activate } from '../machines/machines'
 
 const initialState = createFactoryBoard(5)
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case MATERIAL_FOR_STARTER:
-      return materialTo(action.id, action.material, state)
+      return updatePositionWith(
+        action.id,
+        machine => activate(machine),
+        materialTo(action.id, action.material, state)
+      )
     case ADD_MACHINE:
       return addMachine(action.position, action.machineType, state)
     case ROTATE:

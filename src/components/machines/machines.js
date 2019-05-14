@@ -88,3 +88,13 @@ export const withMaterial = (machine, material) => {
     }
   }
 }
+
+export const activate = machine => {
+  return {
+    ...machine,
+    props: {
+      ...machine.props,
+      active: true
+    }
+  }
+}
