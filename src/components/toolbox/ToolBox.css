@@ -1,0 +1,29 @@
+.toolbox-container {
+  grid-area: sidebar-left;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title {
+  text-align: start;
+  margin-left: 8px;
+  color : #ff8300;
+}
+
+
+.toolbox-board {
+  display: flex;
+  flex-direction: column;
+
+  width: 150px;
+  height: 100%;
+  margin: 4px 0 10px 0;
+  /*background-color: #f1efff;*/
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+

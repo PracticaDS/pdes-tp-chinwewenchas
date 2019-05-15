@@ -6,9 +6,9 @@ import { openRawMaterialSelector } from '../../raw_material_selector/actions'
 
 const image = active => {
   if (active) {
-    return '/icons/starter_active.svg'
+    return 'icons/starter_active.svg'
   } else {
-    return '/icons/starter.svg'
+    return 'icons/starter.svg'
   }
 }
 

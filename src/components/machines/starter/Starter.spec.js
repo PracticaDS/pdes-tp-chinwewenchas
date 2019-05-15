@@ -29,7 +29,7 @@ describe('starter', () => {
     let starter = shallow(<Starter {...defaultProps} />)
 
     it('shows inactive image', () => {
-      expect(starter.find('img').props().src).toEqual('/icons/starter.svg')
+      expect(starter.find('img').props().src).toEqual('icons/starter.svg')
     })
   })
   describe('when is active', () => {
@@ -41,7 +41,7 @@ describe('starter', () => {
 
     it('shows active image', () => {
       expect(starter.find('img').props().src).toEqual(
-        '/icons/starter_active.svg'
+        'icons/starter_active.svg'
       )
     })
   })
