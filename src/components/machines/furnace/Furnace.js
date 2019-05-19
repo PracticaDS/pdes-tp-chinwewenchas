@@ -1,9 +1,22 @@
 import React from 'react'
 
-import './Furnace.css'
+import { Machine } from '../machine/Machine'
+import PropTypes from 'prop-types'
 
-export class Furnace extends React.Component {
-  render () {
-    return <div className="furnace" />
-  }
+export const Furnace = ({ active, direction }) => {
+  return (
+    <div className="furnace">
+      <Machine
+        active={active}
+        direction={direction}
+        activeImg="icons/furnace_active.svg"
+        inactiveImg="icons/furnace.svg"
+      />
+    </div>
+  )
+}
+
+Furnace.propTypes = {
+  active: PropTypes.bool,
+  direction: PropTypes.object
 }
