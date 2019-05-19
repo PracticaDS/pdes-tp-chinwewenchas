@@ -1,18 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Starter from '../starter/Starter'
-import { NoneMachine } from '../none_machine/NoneMachine'
-import { STARTER_MACHINE } from '../machines'
 
-export const Machine = ({ machine }) => {
-  switch (machine.type) {
-    case STARTER_MACHINE:
-      return <Starter {...machine.props} />
-    default:
-      return <NoneMachine {...machine.props} />
+const image = (active, activeImg, inactiveImg) => {
+  if (active) {
+    return activeImg
+  } else {
+    return inactiveImg
   }
 }
 
+const directionToRotation = direction => {
+  return {
+    transform: `rotate(${direction.rotation}turn)`
+  }
+}
+
+export const Machine = ({ active, direction, activeImg, inactiveImg }) => {
+  return (
+    <img
+      style={directionToRotation(direction)}
+      src={image(active, activeImg, inactiveImg)}
+      alt="machine"
+    />
+  )
+}
+
 Machine.propTypes = {
-  machine: PropTypes.object
+  active: PropTypes.bool,
+  direction: PropTypes.object,
+  activeImg: PropTypes.string,
+  inactiveImg: PropTypes.string
 }

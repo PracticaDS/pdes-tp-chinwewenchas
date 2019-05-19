@@ -1,36 +1,42 @@
 import { Cell } from '../cell/Cell'
-import React from 'react'
-import { Machine } from '../machines/machine/Machine'
+import React, { Fragment } from 'react'
+import { MachineCreator } from '../machines/machineCreator/MachineCreator'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addMachine, rotateMachine, tick } from './actions'
 import './Factory.css'
 import RawMaterialPopup from '../raw_material_popup/RawMaterialPopup'
-import { STARTER_MACHINE } from '../machines/machines'
+import { STARTER_MACHINE, TRANSPORTER_MACHINE } from '../machines/machines'
 
 export const Factory = ({ factory, addMachine, rotate, tick }) => {
   tick()
   return (
-    <div className="factory">
+    <Fragment>
       <button onClick={addMachine}>agregar</button>
       <button onClick={rotate}>girar</button>
-      {Object.keys(factory)
-        .map(row => {
-          return (
-            <div key={row}>
-              {Object.keys(factory[row]).map(col => {
-                return (
-                  <Cell key={col} className="factory_item">
-                    <Machine machine={factory[row][col]} />
-                  </Cell>
-                )
-              })}
-            </div>
-          )
-        })
-        .flat(1)}
+      <div className="factory">
+        <table>
+          {Object.keys(factory)
+            .map(row => {
+              return (
+                <tr key={row}>
+                  {Object.keys(factory[row]).map(col => {
+                    return (
+                      <td key={col}>
+                        <Cell className="factory_item">
+                          <MachineCreator machine={factory[row][col]} />
+                        </Cell>
+                      </td>
+                    )
+                  })}
+                </tr>
+              )
+            })
+            .flat(1)}
+        </table>
+      </div>
       <RawMaterialPopup />
-    </div>
+    </Fragment>
   )
 }
 
@@ -49,7 +55,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addMachine: () => dispatch(addMachine({ y: 1, x: 1 }, STARTER_MACHINE)),
+    addMachine: () => {
+      dispatch(addMachine({ y: 1, x: 1 }, STARTER_MACHINE))
+      dispatch(addMachine({ y: 2, x: 1 }, TRANSPORTER_MACHINE))
+    },
     rotate: () => dispatch(rotateMachine({ y: 1, x: 1 })),
     tick: () => dispatch(tick())
   }

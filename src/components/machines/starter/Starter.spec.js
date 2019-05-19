@@ -7,7 +7,7 @@ describe('starter', () => {
   let defaultProps = {
     active: false,
     onClick: () => {},
-    id: { x: 1, y: 1 },
+    position: { x: 1, y: 1 },
     direction: south()
   }
 
@@ -23,26 +23,5 @@ describe('starter', () => {
 
     starter.find('div.starter').simulate('click')
     expect(executed).toBe(true)
-  })
-
-  describe('when is inactive', () => {
-    let starter = shallow(<Starter {...defaultProps} />)
-
-    it('shows inactive image', () => {
-      expect(starter.find('img').props().src).toEqual('icons/starter.svg')
-    })
-  })
-  describe('when is active', () => {
-    let props = {
-      ...defaultProps,
-      active: true
-    }
-    let starter = shallow(<Starter {...props} />)
-
-    it('shows active image', () => {
-      expect(starter.find('img').props().src).toEqual(
-        'icons/starter_active.svg'
-      )
-    })
   })
 })

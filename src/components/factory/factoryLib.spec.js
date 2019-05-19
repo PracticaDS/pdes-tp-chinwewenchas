@@ -54,8 +54,8 @@ describe('factory lib', function () {
     })
   })
 
-  describe('add a machine', () => {
-    describe('when there are no machine at that position', () => {
+  describe('add a machineCreator', () => {
+    describe('when there are no machineCreator at that position', () => {
       let factory = emptyFactory()
       it('adds it', () => {
         let machinePosition = position(0, 0)
@@ -64,7 +64,7 @@ describe('factory lib', function () {
         ).toEqual(newMachine(machinePosition, NONE_MACHINE))
       })
     })
-    describe('when there are a machine at that position', () => {
+    describe('when there are a machineCreator at that position', () => {
       let factory = createFactoryBoard(1)
       it('replace it', () => {
         let machinePosition = position(0, 0)
@@ -78,7 +78,7 @@ describe('factory lib', function () {
     })
   })
 
-  describe('rotate a machine', () => {
+  describe('rotate a machineCreator', () => {
     let machinePosition = position(0, 0)
     let factory = addMachine(machinePosition, STARTER_MACHINE, emptyFactory())
     it('rotates it clockwise', () => {

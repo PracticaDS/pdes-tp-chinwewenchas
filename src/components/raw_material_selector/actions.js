@@ -1,10 +1,10 @@
 import { toggleRawMaterialPopup } from '../raw_material_popup/actions'
 import { materialForStarter } from '../factory/actions'
 
-export const rawMaterialSelected = (starterId, material) => {
+export const rawMaterialSelected = (starterPosition, material) => {
   return dispatch => {
     dispatch(toggleRawMaterialPopup())
-    dispatch(materialForStarter(starterId, material))
+    dispatch(materialForStarter(starterPosition, material))
   }
 }
 

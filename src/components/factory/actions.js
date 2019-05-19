@@ -1,10 +1,14 @@
-import { isNoneMachine } from '../machines/machines'
+import {
+  isOfType,
+  STARTER_MACHINE,
+  TRANSPORTER_MACHINE
+} from '../machines/machines'
 
 export const MATERIAL_FOR_STARTER = 'MATERIAL_FOR_STARTER'
-export const materialForStarter = (id, material) => {
+export const materialForStarter = (position, material) => {
   return {
     type: MATERIAL_FOR_STARTER,
-    id,
+    position: position,
     material
   }
 }
@@ -26,22 +30,13 @@ export const rotateMachine = position => {
   }
 }
 
-export const MATERIAL_TO = 'MATERIAL_TO'
-export const materialTo = (direction, material) => {
-  return {
-    type: MATERIAL_TO,
-    direction,
-    material: material
-  }
-}
-
 export const TICK = 'TICK'
 export const tick = () => {
   return (dispatch, getState) => {
     if (!getState().factory.timer) {
       let timer = setInterval(
         () => dispatch(doTick(findMachinesToTick(getState().factory))),
-        10000
+        5000
       )
       dispatch(tickTimer(timer))
     }
@@ -56,16 +51,21 @@ export const tickTimer = timer => {
   }
 }
 
-const findMachinesToTick = state => {
-  return Object.keys(state)
+const findMachines = (factory, machineType) => {
+  return Object.keys(factory)
     .map(row => {
-      return Object.keys(state[row])
-        .filter(col => !isNoneMachine(state[row][col]))
+      return Object.keys(factory[row])
+        .filter(col => isOfType(factory[row][col], machineType))
         .map(col => {
           return { y: row, x: col }
         })
     })
     .flat()
+}
+const findMachinesToTick = factory => {
+  const starters = findMachines(factory, STARTER_MACHINE)
+  const transporters = findMachines(factory, TRANSPORTER_MACHINE)
+  return [...transporters, ...starters]
 }
 
 const doTick = machines => {

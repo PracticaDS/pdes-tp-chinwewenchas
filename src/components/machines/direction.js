@@ -72,3 +72,11 @@ export const positionAt = (position, direction) => {
       return { y: -1, x: -1 }
   }
 }
+
+export const isPositionAtDirection = (position, direction, toPosition) => {
+  return equals(positionAt(position, direction), toPosition)
+}
+
+const equals = (left, right) => {
+  return left.x === right.x && left.y === right.y
+}

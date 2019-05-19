@@ -10,21 +10,9 @@ import { Rotate } from '../actions/rotate/Rotate'
 import './ToolBox.css'
 import { Starter } from '../machines/starter/StarterToolbox'
 import { Cell } from '../cell/Cell'
+import { south } from '../machines/direction'
 
 export class ToolBox extends React.Component {
-  constructor (props) {
-    super(props)
-    this.basePath = '../../assets/'
-    this.machinesPaths = [
-      'crafter.svg',
-      'furnace.svg',
-      'seller.svg',
-      'starter.svg',
-      'transporter.svg'
-    ]
-    this.actionsPaths = ['eliminar.svg', 'mover.svg', 'rotar.svg']
-  }
-
   calculateStyle () {
     return {
       gridTemplateColumns: `repeat(${2}, fit-content(120px))`
@@ -40,7 +28,7 @@ export class ToolBox extends React.Component {
     machineSquares.push(this.cell(<Seller id={2} key={2} />))
     machineSquares.push(this.cell(<Furnace id={3} key={3} />))
     machineSquares.push(this.cell(<Crafter id={4} key={4} />))
-    machineSquares.push(this.cell(<Transporter id={5} key={5} />))
+    machineSquares.push(this.cell(<Transporter direction={south()} />))
     machineSquares.push(this.cell(<Cell />))
 
     const actionSquares = []
