@@ -1,0 +1,15 @@
+.incomes-container {
+  grid-area: header;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color : #ff8300;
+}
+
+.incomes {
+  background-color: #485262;
+  margin-left: 8px;
+  color: white;
+  padding: 1px 10px 1px 10px;
+}

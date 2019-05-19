@@ -10,8 +10,8 @@ import { newMachine, NONE_MACHINE, STARTER_MACHINE } from '../machines/machines'
 
 describe('factory lib', function () {
   describe('an empty factory', () => {
-    it('is an empty object', function () {
-      expect(emptyFactory()).toEqual({})
+    it('creates an empty factory', function () {
+      expect(emptyFactory()).toEqual({ rows: 0, columns: 0, totalSells: 0 })
     })
   })
   describe('create factory board', () => {

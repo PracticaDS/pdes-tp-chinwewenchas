@@ -1,16 +1,18 @@
 import {
   isPositionAtDirection,
+  isPositionNeighbour,
   opositeDirection,
   positionAt,
   south,
   turnClockwise
 } from './direction'
 import {
+  addToSells,
   machineAt,
   materialTo,
   updatePositionWith
 } from '../factory/factoryLib'
-import { meltMaterials } from './materials'
+import { materialProfit, meltMaterials } from './materials'
 
 export const STARTER_MACHINE = 'STARTER_MACHINE'
 const starterMachine = position => {
@@ -61,6 +63,18 @@ const furnanceMachine = position => {
   }
 }
 
+export const SELLER_MACHINE = 'SELLER_MACHINE'
+const sellerMachine = position => {
+  return {
+    type: SELLER_MACHINE,
+    props: {
+      position: position,
+      active: false,
+      direction: south(),
+      materials: []
+    }
+  }
+}
 export const isNoneMachine = machine => {
   return machine.type === NONE_MACHINE
 }
@@ -73,6 +87,8 @@ export const newMachine = (position, machineType) => {
       return transporterMachine(position)
     case FURNACE_MACHINE:
       return furnanceMachine(position)
+    case SELLER_MACHINE:
+      return sellerMachine(position)
     default:
       return noneMachine(position)
   }
@@ -87,6 +103,8 @@ export const tickMachine = (factory, position) => {
       return tickToTransporter(factory, machine)
     case FURNACE_MACHINE:
       return tickToFurnace(factory, machine)
+    case SELLER_MACHINE:
+      return tickToSeller(factory, machine)
     default:
       return factory
   }
@@ -108,6 +126,16 @@ const withMaterialsTick = (factory, machine, materials) => {
   return factory
 }
 
+const tickToSeller = (factory, machine) => {
+  const sells = machine.props.materials
+    .map(material => materialProfit(material))
+    .reduce((totalSells, materialProfit) => totalSells + materialProfit, 0)
+  return updatePositionWith(
+    machine.props.position,
+    machine => clearMaterials(machine),
+    addToSells(sells, factory)
+  )
+}
 const tickToFurnace = (factory, machine) => {
   const materials = meltMaterials(machine.props.materials)
   const newfactory = withMaterialsTick(factory, machine, materials)
@@ -175,6 +203,8 @@ export const withMaterial = (machine, materials, fromPosition = undefined) => {
       return materialForStarter(machine, materials)
     case FURNACE_MACHINE:
       return materialForFurnace(machine, materials, fromPosition)
+    case SELLER_MACHINE:
+      return materialForSeller(machine, materials, fromPosition)
     default:
       return machine
   }
@@ -210,6 +240,22 @@ const materialForFurnace = (machine, materials, fromPosition) => {
     return machine
   }
 }
+
+const materialForSeller = (machine, materials, fromPosition) => {
+  if (isPositionNeighbour(machine.props.position, fromPosition)) {
+    return {
+      ...machine,
+      props: {
+        ...machine.props,
+        materials: [...machine.props.materials, ...materials],
+        active: true
+      }
+    }
+  } else {
+    return machine
+  }
+}
+
 const materialForTransporter = (machine, materials, fromPosition) => {
   if (
     isPositionAtDirection(

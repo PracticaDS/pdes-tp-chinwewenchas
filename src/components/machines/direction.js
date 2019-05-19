@@ -95,3 +95,12 @@ export const opositeDirection = direction => {
       return undefined
   }
 }
+
+export const isPositionNeighbour = (position, toPosition) => {
+  return (
+    isPositionAtDirection(position, north(), toPosition) ||
+    isPositionAtDirection(position, south(), toPosition) ||
+    isPositionAtDirection(position, west(), toPosition) ||
+    isPositionAtDirection(position, east(), toPosition)
+  )
+}

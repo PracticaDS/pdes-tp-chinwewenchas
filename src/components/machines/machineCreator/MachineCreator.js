@@ -4,11 +4,13 @@ import Starter from '../starter/Starter'
 import { NoneMachine } from '../none_machine/NoneMachine'
 import {
   FURNACE_MACHINE,
+  SELLER_MACHINE,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines'
 import { Transporter } from '../transporter/Transporter'
 import { Furnace } from '../furnace/Furnace'
+import { Seller } from '../seller/Seller'
 
 function mapMachine (machine) {
   switch (machine.type) {
@@ -18,6 +20,8 @@ function mapMachine (machine) {
       return <Transporter {...machine.props} />
     case FURNACE_MACHINE:
       return <Furnace {...machine.props} />
+    case SELLER_MACHINE:
+      return <Seller {...machine.props} />
     default:
       return <NoneMachine {...machine.props} />
   }

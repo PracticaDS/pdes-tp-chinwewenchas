@@ -1,6 +1,7 @@
 import { MachineCreator } from './MachineCreator'
 import {
   FURNACE_MACHINE,
+  SELLER_MACHINE,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines'
@@ -38,7 +39,7 @@ describe('machineCreator component', () => {
       expect(machine.exists('.transporter')).toBe(true)
     })
   })
-  describe('when machineCreator type is furnace', () => {
+  describe('when machine type is furnace', () => {
     it('render the furnace machine', function () {
       let machineToRender = {
         type: FURNACE_MACHINE,
@@ -50,6 +51,20 @@ describe('machineCreator component', () => {
         </TestProvider>
       )
       expect(machine.exists('.furnace')).toBe(true)
+    })
+  })
+  describe('when machine type is seller', () => {
+    it('render the seller machine', function () {
+      let machineToRender = {
+        type: SELLER_MACHINE,
+        props: { direction: south() }
+      }
+      let machine = mount(
+        <TestProvider>
+          <MachineCreator machine={machineToRender} />
+        </TestProvider>
+      )
+      expect(machine.exists('.seller')).toBe(true)
     })
   })
   describe('when machineCreator type any other', () => {

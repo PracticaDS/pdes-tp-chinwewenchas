@@ -1,14 +1,22 @@
 import React from 'react'
 
-import './Seller.css'
+import { Machine } from '../machine/Machine'
+import PropTypes from 'prop-types'
 
-export class Seller extends React.Component {
-  receiveMaterialFromUser (material, user) {
-    // Todo: mejorar esto cuando exista la Toolbar
-    user.receive(material.price)
-    // material.destroy()
-  }
-  render () {
-    return <div className="seller" />
-  }
+export const Seller = ({ active, direction }) => {
+  return (
+    <div className="seller">
+      <Machine
+        active={active}
+        direction={direction}
+        activeImg="icons/seller_active.svg"
+        inactiveImg="icons/seller.svg"
+      />
+    </div>
+  )
+}
+
+Seller.propTypes = {
+  active: PropTypes.bool,
+  direction: PropTypes.object
 }

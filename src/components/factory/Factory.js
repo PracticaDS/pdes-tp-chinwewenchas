@@ -8,6 +8,7 @@ import './Factory.css'
 import RawMaterialPopup from '../raw_material_popup/RawMaterialPopup'
 import {
   FURNACE_MACHINE,
+  SELLER_MACHINE,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines/machines'
@@ -63,6 +64,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(addMachine({ y: 1, x: 1 }, STARTER_MACHINE))
       dispatch(addMachine({ y: 2, x: 1 }, TRANSPORTER_MACHINE))
       dispatch(addMachine({ y: 3, x: 1 }, FURNACE_MACHINE))
+      dispatch(addMachine({ y: 4, x: 1 }, SELLER_MACHINE))
     },
     rotate: () => dispatch(rotateMachine({ y: 1, x: 1 })),
     tick: () => dispatch(tick())
