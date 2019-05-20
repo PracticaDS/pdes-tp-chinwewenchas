@@ -5,58 +5,61 @@ import { RawMaterial } from '../raw_material/RawMaterial'
 import { connect } from 'react-redux'
 import { rawMaterialSelected } from './actions'
 
-export const RawMaterialSelector = ({ starterId, rawMaterialSelected }) => {
+export const RawMaterialSelector = ({
+  starterPosition,
+  rawMaterialSelected
+}) => {
   return (
     <div className="raw-material-selector">
       <RawMaterial
         className="raw-material-selector-item"
         color="yellow"
         name="Oro"
-        onClick={() => rawMaterialSelected(starterId, 'gold')}
+        onClick={() => rawMaterialSelected(starterPosition, 'gold')}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="orange"
         name="Cobre"
-        onClick={() => rawMaterialSelected(starterId, 'cobber')}
+        onClick={() => rawMaterialSelected(starterPosition, 'cobber')}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="silver"
         name="Aluminio"
-        onClick={() => rawMaterialSelected(starterId, 'silver')}
+        onClick={() => rawMaterialSelected(starterPosition, 'silver')}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="black"
         name="Carbon"
-        onClick={() => rawMaterialSelected(starterId, 'carbon')}
+        onClick={() => rawMaterialSelected(starterPosition, 'carbon')}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="darkgrey"
         name="Hierro"
-        onClick={() => rawMaterialSelected(starterId, 'iron')}
+        onClick={() => rawMaterialSelected(starterPosition, 'iron')}
       />
     </div>
   )
 }
 
 RawMaterialSelector.propTypes = {
-  starterId: PropTypes.object,
+  starterPosition: PropTypes.object,
   rawMaterialSelected: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
-    starterId: state.rawMaterialSelector.selected
+    starterPosition: state.rawMaterialSelector.selected
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    rawMaterialSelected: (id, material) =>
-      dispatch(rawMaterialSelected(id, material))
+    rawMaterialSelected: (position, material) =>
+      dispatch(rawMaterialSelected(position, material))
   }
 }
 

@@ -3,28 +3,16 @@ import PropTypes from 'prop-types'
 import './Starter.css'
 import { connect } from 'react-redux'
 import { openRawMaterialSelector } from '../../raw_material_selector/actions'
+import { Machine } from '../machine/Machine'
 
-const image = active => {
-  if (active) {
-    return 'icons/starter_active.svg'
-  } else {
-    return 'icons/starter.svg'
-  }
-}
-
-const directionToRotation = direction => {
-  return {
-    transform: `rotate(${direction.rotation}turn)`
-  }
-}
-
-export const Starter = ({ id, active, onClick, direction }) => {
+export const Starter = ({ position, active, onClick, direction }) => {
   return (
-    <div className="starter" onClick={() => onClick(id)}>
-      <img
-        style={directionToRotation(direction)}
-        src={image(active)}
-        alt="machine"
+    <div className="starter" onClick={() => onClick(position)}>
+      <Machine
+        direction={direction}
+        activeImg="icons/starter_active.svg"
+        inactiveImg="icons/starter.svg"
+        active={active}
       />
     </div>
   )
@@ -33,12 +21,12 @@ export const Starter = ({ id, active, onClick, direction }) => {
 Starter.propTypes = {
   active: PropTypes.bool,
   onClick: PropTypes.func,
-  id: PropTypes.object,
+  position: PropTypes.object,
   direction: PropTypes.object
 }
 
 const mapDispatchToProps = dispatch => ({
-  onClick: id => dispatch(openRawMaterialSelector(id))
+  onClick: position => dispatch(openRawMaterialSelector(position))
 })
 const connector = connect(
   undefined,

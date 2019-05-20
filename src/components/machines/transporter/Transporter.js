@@ -1,31 +1,23 @@
 import React from 'react'
 
 import './Transporter.css'
+import { Machine } from '../machine/Machine'
 import PropTypes from 'prop-types'
-import daggy from 'daggy'
 
-export class Transporter extends React.Component {
-  moveMaterialToDirection (material) {
-    // Todo: mejorar esto cuando exista la Toolbar
-    this.props.direction.cata({
-      Left: () => material.moveX(-1),
-      Right: () => material.moveX(1),
-      Down: () => material.moveY(-1),
-      Up: () => material.moveY(1)
-    })
-  }
-
-  render () {
-    return <div className="transporter" />
-  }
+export const Transporter = ({ active, direction }) => {
+  return (
+    <div className="transporter">
+      <Machine
+        active={active}
+        direction={direction}
+        activeImg="icons/transporter_active.svg"
+        inactiveImg="icons/transporter.svg"
+      />
+    </div>
+  )
 }
-const directions = daggy.taggedSum('directions', {
-  Left: 'left',
-  Right: 'right',
-  Down: 'down',
-  Up: 'up'
-})
 
 Transporter.propTypes = {
-  direction: PropTypes.oneOf(Object.keys(directions))
+  active: PropTypes.bool,
+  direction: PropTypes.object
 }

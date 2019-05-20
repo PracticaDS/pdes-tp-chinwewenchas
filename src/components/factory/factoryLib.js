@@ -58,10 +58,15 @@ export const findAndRotateMachine = (position, factory) => {
   )
 }
 
-export const materialTo = (position, material, factory) => {
+export const materialTo = (
+  position,
+  materials,
+  factory,
+  fromPosition = undefined
+) => {
   return updatePositionWith(
     position,
-    machine => withMaterial(machine, material),
+    machine => withMaterial(machine, materials, fromPosition),
     factory
   )
 }
