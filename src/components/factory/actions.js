@@ -1,4 +1,5 @@
 import {
+  FURNACE_MACHINE,
   isOfType,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
@@ -65,7 +66,8 @@ const findMachines = (factory, machineType) => {
 const findMachinesToTick = factory => {
   const starters = findMachines(factory, STARTER_MACHINE)
   const transporters = findMachines(factory, TRANSPORTER_MACHINE)
-  return [...transporters, ...starters]
+  const furnaces = findMachines(factory, FURNACE_MACHINE)
+  return [...furnaces, ...transporters, ...starters]
 }
 
 const doTick = machines => {

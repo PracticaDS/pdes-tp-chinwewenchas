@@ -80,3 +80,18 @@ export const isPositionAtDirection = (position, direction, toPosition) => {
 const equals = (left, right) => {
   return left.x === right.x && left.y === right.y
 }
+
+export const opositeDirection = direction => {
+  switch (direction.direction) {
+    case NORTH:
+      return south()
+    case EAST:
+      return west()
+    case WEST:
+      return east()
+    case SOUTH:
+      return north()
+    default:
+      return undefined
+  }
+}

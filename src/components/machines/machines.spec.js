@@ -1,5 +1,6 @@
 import { east, north, position, positionAt, south, west } from './direction'
 import {
+  FURNACE_MACHINE,
   isNoneMachine,
   newMachine,
   NONE_MACHINE,
@@ -17,11 +18,12 @@ import {
   materialTo,
   updatePositionWith
 } from '../factory/factoryLib'
+import { GOLD, isSolid, newMaterial, SILVER } from './materials'
 
 describe('machines', function () {
   let machinePosition = position(1, 1)
   describe('creation', function () {
-    describe('when create a starter machineCreator', function () {
+    describe('when create a starter machine', function () {
       const starterMachine = newMachine(machinePosition, STARTER_MACHINE)
       it('creates with defauls props', () => {
         expect(starterMachine.type).toBe(STARTER_MACHINE)
@@ -31,7 +33,7 @@ describe('machines', function () {
         expect(starterMachine.props.material).toBe(undefined)
       })
     })
-    describe('when create a transporter machineCreator', () => {
+    describe('when create a transporter machine', () => {
       const transporterMachine = newMachine(
         machinePosition,
         TRANSPORTER_MACHINE
@@ -44,7 +46,17 @@ describe('machines', function () {
         expect(transporterMachine.props.materials).toEqual([])
       })
     })
-    describe('when create a none machineCreator', function () {
+    describe('when create a furnance machine', () => {
+      const furnanceMachine = newMachine(machinePosition, FURNACE_MACHINE)
+      it('creates it with default props', () => {
+        expect(furnanceMachine.type).toBe(FURNACE_MACHINE)
+        expect(furnanceMachine.props.position).toEqual(machinePosition)
+        expect(furnanceMachine.props.active).toBe(false)
+        expect(furnanceMachine.props.direction).toEqual(south())
+        expect(furnanceMachine.props.materials).toEqual([])
+      })
+    })
+    describe('when create a none machine', function () {
       const noneMachine = newMachine(machinePosition, NONE_MACHINE)
       it('creates it with a position and material count in zero', () => {
         expect(noneMachine.type).toBe(NONE_MACHINE)
@@ -97,26 +109,32 @@ describe('machines', function () {
     })
   })
   describe('receive material', () => {
+    let fromMachine
+    let machine
+    const someMaterials = ['lala', 'lolo']
+    const anotherMaterial = ['lele']
+
+    const itAccumulatesMaterial = () => {
+      let withMaterialMachine = withMaterial(
+        withMaterial(machine, someMaterials, fromMachine.props.position),
+        anotherMaterial,
+        fromMachine.props.position
+      )
+      expect(withMaterialMachine.props.materials).toContain(someMaterials[0])
+      expect(withMaterialMachine.props.materials).toContain(someMaterials[1])
+      expect(withMaterialMachine.props.materials).toContain(anotherMaterial[0])
+      expect(withMaterialMachine.props.active).toBe(true)
+    }
+    const itNotAccumulatesMaterial = () => {
+      let withMaterialMachine = withMaterial(
+        withMaterial(machine, someMaterials, fromMachine.props.position),
+        anotherMaterial,
+        fromMachine.props.position
+      )
+      expect(withMaterialMachine).toBe(machine)
+    }
+
     describe('when the receiver it is a transporter', () => {
-      let fromMachine
-      let machine
-      const someMaterials = ['lala', 'lolo']
-      const anotherMaterial = ['lele']
-
-      const itShouldAccumulateMaterialInIt = () => {
-        let withMaterialMachine = withMaterial(
-          withMaterial(machine, someMaterials, fromMachine.props.position),
-          anotherMaterial,
-          fromMachine.props.position
-        )
-        expect(withMaterialMachine.props.materials).toContain(someMaterials[0])
-        expect(withMaterialMachine.props.materials).toContain(someMaterials[1])
-        expect(withMaterialMachine.props.materials).toContain(
-          anotherMaterial[0]
-        )
-        expect(withMaterialMachine.props.active).toBe(true)
-      }
-
       describe('when the transporter direction is south', () => {
         beforeEach(() => {
           machine = newMachine(machinePosition, TRANSPORTER_MACHINE)
@@ -127,21 +145,21 @@ describe('machines', function () {
             positionAt(machinePosition, north()),
             STARTER_MACHINE
           )
-          itShouldAccumulateMaterialInIt()
+          itAccumulatesMaterial()
         })
         test('can receive material from east', () => {
           fromMachine = newMachine(
             positionAt(machinePosition, east()),
             STARTER_MACHINE
           )
-          itShouldAccumulateMaterialInIt()
+          itAccumulatesMaterial()
         })
         test('can receive material from west', () => {
           fromMachine = newMachine(
             positionAt(machinePosition, west()),
             STARTER_MACHINE
           )
-          itShouldAccumulateMaterialInIt()
+          itAccumulatesMaterial()
         })
         test('can not receive material from south', () => {
           fromMachine = newMachine(
@@ -157,7 +175,7 @@ describe('machines', function () {
         })
       })
     })
-    describe('when the receiver it is a none machineCreator', () => {
+    describe('when the receiver it is a none machine', () => {
       let machine = newMachine(machinePosition, NONE_MACHINE)
       it('should increase the material counter', () => {
         let withMaterialMachine = withMaterial(
@@ -167,7 +185,7 @@ describe('machines', function () {
         expect(withMaterialMachine.props.materialCount).toBe(3)
       })
     })
-    describe('when the receiver it is a starter machineCreator', () => {
+    describe('when the receiver it is a starter machine', () => {
       let machine = newMachine(machinePosition, STARTER_MACHINE)
       const material = 'lala'
       it('should set the material to produce', () => {
@@ -175,7 +193,43 @@ describe('machines', function () {
         expect(withMaterialMachine.props.material).toBe(material)
       })
     })
-    describe('when the receiver it is any other machineCreator', () => {
+    describe('when the receiver it is a furnace machine', () => {
+      describe('when the furnace direction is south', () => {
+        beforeEach(() => {
+          machine = newMachine(machinePosition, FURNACE_MACHINE)
+          machine = pointTo(machine, south())
+        })
+        it('can receive material from north', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, north()),
+            STARTER_MACHINE
+          )
+          itAccumulatesMaterial()
+        })
+        it('can not receive material from south', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, south()),
+            STARTER_MACHINE
+          )
+          itNotAccumulatesMaterial()
+        })
+        it('can not receive material from east', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, east()),
+            STARTER_MACHINE
+          )
+          itNotAccumulatesMaterial()
+        })
+        it('can not receive material from west', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, west()),
+            STARTER_MACHINE
+          )
+          itNotAccumulatesMaterial()
+        })
+      })
+    })
+    describe('when the receiver it is any other machine', () => {
       let machine = { type: 'lala' }
       const material = 'lele'
       it('should return the machineCreator unmodified', () => {
@@ -201,7 +255,7 @@ describe('machines', function () {
 
     function andTheMachineDirectionIs (direction, factory) {
       describe(`and the machine direction is ${direction.direction}`, () => {
-        test('because there are no machineCreator there', () => {
+        it('because there are no machineCreator there', () => {
           itReturnsTheFactoryUnmodified(
             machinePosition,
             machineDirectionTo(machinePosition, direction, factory)
@@ -210,11 +264,11 @@ describe('machines', function () {
       })
     }
 
-    describe('when tick on starter machineCreator', () => {
+    describe('when tick on starter machine', () => {
       let newFactory = addMachine(machinePosition, STARTER_MACHINE, factory)
 
       describe('and cant deliver material', () => {
-        test('because the starter dont have a material selected', () => {
+        it('because the starter dont have a material selected', () => {
           itReturnsTheFactoryUnmodified(machinePosition, newFactory)
         })
         andTheMachineDirectionIs(south(), newFactory)
@@ -257,7 +311,7 @@ describe('machines', function () {
         })
       })
     })
-    describe('when tick on a transporter machineCreator', () => {
+    describe('when tick on a transporter machine', () => {
       let transporterPosition
       let newFactory
 
@@ -269,7 +323,7 @@ describe('machines', function () {
           factory
         )
       })
-      test('when the transporter is empty', function () {
+      it('when the transporter is empty', function () {
         itReturnsTheFactoryUnmodified(machinePosition, newFactory)
       })
       it('when the transporter has materials to deliver', () => {
@@ -301,7 +355,45 @@ describe('machines', function () {
         ).toBe(2)
       })
     })
-    test('when tick on any other machineCreator', () => {
+    describe('when tick on a furnace machine', () => {
+      let furnacePosition
+      let newFactory
+
+      beforeEach(() => {
+        furnacePosition = position(1, 1)
+        newFactory = addMachine(furnacePosition, FURNACE_MACHINE, factory)
+      })
+      it('when the furnace is empty', function () {
+        itReturnsTheFactoryUnmodified(machinePosition, newFactory)
+      })
+      it('when the furnace has materials to melt', () => {
+        const otherMachinePosition = positionAt(furnacePosition, south())
+        const fromPosition = positionAt(furnacePosition, north())
+
+        newFactory = machineDirectionTo(furnacePosition, south(), newFactory)
+        newFactory = addMachine(
+          otherMachinePosition,
+          TRANSPORTER_MACHINE,
+          newFactory
+        )
+        newFactory = materialTo(
+          furnacePosition,
+          [newMaterial(GOLD), newMaterial(SILVER)],
+          newFactory,
+          fromPosition
+        )
+        newFactory = tickMachine(newFactory, furnacePosition)
+        const expectedFurnace = machineAt(furnacePosition, newFactory)
+        const expectedTransporter = machineAt(otherMachinePosition, newFactory)
+
+        expect(expectedFurnace.props.materials.length).toBe(0)
+        expect(expectedFurnace.props.active).toBe(false)
+        expect(expectedTransporter.props.materials.length).toBe(2)
+        expect(isSolid(expectedTransporter.props.materials[0])).toBe(false)
+        expect(isSolid(expectedTransporter.props.materials[1])).toBe(false)
+      })
+    })
+    it('when tick on any other machineCreator', () => {
       let newFactory = addMachine(machinePosition, NONE_MACHINE, factory)
       itReturnsTheFactoryUnmodified(machinePosition, newFactory)
     })

@@ -1,5 +1,6 @@
 import {
   isPositionAtDirection,
+  opositeDirection,
   positionAt,
   south,
   turnClockwise
@@ -9,6 +10,7 @@ import {
   materialTo,
   updatePositionWith
 } from '../factory/factoryLib'
+import { meltMaterials } from './materials'
 
 export const STARTER_MACHINE = 'STARTER_MACHINE'
 const starterMachine = position => {
@@ -46,6 +48,19 @@ const transporterMachine = position => {
   }
 }
 
+export const FURNACE_MACHINE = 'FURNACE_MACHINE'
+const furnanceMachine = position => {
+  return {
+    type: FURNACE_MACHINE,
+    props: {
+      position: position,
+      active: false,
+      direction: south(),
+      materials: []
+    }
+  }
+}
+
 export const isNoneMachine = machine => {
   return machine.type === NONE_MACHINE
 }
@@ -56,6 +71,8 @@ export const newMachine = (position, machineType) => {
       return starterMachine(position)
     case TRANSPORTER_MACHINE:
       return transporterMachine(position)
+    case FURNACE_MACHINE:
+      return furnanceMachine(position)
     default:
       return noneMachine(position)
   }
@@ -68,6 +85,8 @@ export const tickMachine = (factory, position) => {
       return tickToStarter(factory, machine)
     case TRANSPORTER_MACHINE:
       return tickToTransporter(factory, machine)
+    case FURNACE_MACHINE:
+      return tickToFurnace(factory, machine)
     default:
       return factory
   }
@@ -88,6 +107,17 @@ const withMaterialsTick = (factory, machine, materials) => {
   }
   return factory
 }
+
+const tickToFurnace = (factory, machine) => {
+  const materials = meltMaterials(machine.props.materials)
+  const newfactory = withMaterialsTick(factory, machine, materials)
+  return updatePositionWith(
+    machine.props.position,
+    machine => clearMaterials(machine),
+    newfactory
+  )
+}
+
 const tickToTransporter = (factory, machine) => {
   const materials = machine.props.materials
   const newfactory = withMaterialsTick(factory, machine, materials)
@@ -143,6 +173,8 @@ export const withMaterial = (machine, materials, fromPosition = undefined) => {
       return materialForTransporter(machine, materials, fromPosition)
     case STARTER_MACHINE:
       return materialForStarter(machine, materials)
+    case FURNACE_MACHINE:
+      return materialForFurnace(machine, materials, fromPosition)
     default:
       return machine
   }
@@ -158,6 +190,26 @@ const materialForStarter = (machine, material) => {
   }
 }
 
+const materialForFurnace = (machine, materials, fromPosition) => {
+  if (
+    isPositionAtDirection(
+      machine.props.position,
+      opositeDirection(machine.props.direction),
+      fromPosition
+    )
+  ) {
+    return {
+      ...machine,
+      props: {
+        ...machine.props,
+        materials: [...machine.props.materials, ...materials],
+        active: true
+      }
+    }
+  } else {
+    return machine
+  }
+}
 const materialForTransporter = (machine, materials, fromPosition) => {
   if (
     isPositionAtDirection(

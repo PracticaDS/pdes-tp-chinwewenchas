@@ -6,7 +6,11 @@ import { connect } from 'react-redux'
 import { addMachine, rotateMachine, tick } from './actions'
 import './Factory.css'
 import RawMaterialPopup from '../raw_material_popup/RawMaterialPopup'
-import { STARTER_MACHINE, TRANSPORTER_MACHINE } from '../machines/machines'
+import {
+  FURNACE_MACHINE,
+  STARTER_MACHINE,
+  TRANSPORTER_MACHINE
+} from '../machines/machines'
 
 export const Factory = ({ factory, addMachine, rotate, tick }) => {
   tick()
@@ -58,6 +62,7 @@ const mapDispatchToProps = dispatch => {
     addMachine: () => {
       dispatch(addMachine({ y: 1, x: 1 }, STARTER_MACHINE))
       dispatch(addMachine({ y: 2, x: 1 }, TRANSPORTER_MACHINE))
+      dispatch(addMachine({ y: 3, x: 1 }, FURNACE_MACHINE))
     },
     rotate: () => dispatch(rotateMachine({ y: 1, x: 1 })),
     tick: () => dispatch(tick())

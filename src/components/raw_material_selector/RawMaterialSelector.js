@@ -4,6 +4,14 @@ import './RawMaterialSelector.css'
 import { RawMaterial } from '../raw_material/RawMaterial'
 import { connect } from 'react-redux'
 import { rawMaterialSelected } from './actions'
+import {
+  CARBON,
+  COBBER,
+  GOLD,
+  IRON,
+  newMaterial,
+  SILVER
+} from '../machines/materials'
 
 export const RawMaterialSelector = ({
   starterPosition,
@@ -15,31 +23,31 @@ export const RawMaterialSelector = ({
         className="raw-material-selector-item"
         color="yellow"
         name="Oro"
-        onClick={() => rawMaterialSelected(starterPosition, 'gold')}
+        onClick={() => rawMaterialSelected(starterPosition, GOLD)}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="orange"
         name="Cobre"
-        onClick={() => rawMaterialSelected(starterPosition, 'cobber')}
+        onClick={() => rawMaterialSelected(starterPosition, COBBER)}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="silver"
         name="Aluminio"
-        onClick={() => rawMaterialSelected(starterPosition, 'silver')}
+        onClick={() => rawMaterialSelected(starterPosition, SILVER)}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="black"
         name="Carbon"
-        onClick={() => rawMaterialSelected(starterPosition, 'carbon')}
+        onClick={() => rawMaterialSelected(starterPosition, CARBON)}
       />
       <RawMaterial
         className="raw-material-selector-item"
         color="darkgrey"
         name="Hierro"
-        onClick={() => rawMaterialSelected(starterPosition, 'iron')}
+        onClick={() => rawMaterialSelected(starterPosition, IRON)}
       />
     </div>
   )
@@ -59,7 +67,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     rawMaterialSelected: (position, material) =>
-      dispatch(rawMaterialSelected(position, material))
+      dispatch(rawMaterialSelected(position, newMaterial(material)))
   }
 }
 
