@@ -8,7 +8,7 @@ import {
 import { column, position, row } from '../machines/direction'
 
 export function emptyFactory () {
-  return {}
+  return { rows: 0, columns: 0, totalSells: 0 }
 }
 
 export const createFactoryBoard = size => {
@@ -32,7 +32,14 @@ export const createFactoryBoard = size => {
       return rows
     }, {})
 
-  return { ...board, rows: size, columns: size }
+  return { ...board, rows: size, columns: size, totalSells: 0 }
+}
+
+export const addToSells = (sells, factory) => {
+  return {
+    ...factory,
+    totalSells: factory.totalSells + sells
+  }
 }
 
 export const tick = (machinesPositions, state) => {

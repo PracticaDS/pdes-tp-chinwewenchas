@@ -1,6 +1,7 @@
 import {
   FURNACE_MACHINE,
   isOfType,
+  SELLER_MACHINE,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines/machines'
@@ -67,7 +68,8 @@ const findMachinesToTick = factory => {
   const starters = findMachines(factory, STARTER_MACHINE)
   const transporters = findMachines(factory, TRANSPORTER_MACHINE)
   const furnaces = findMachines(factory, FURNACE_MACHINE)
-  return [...furnaces, ...transporters, ...starters]
+  const sellers = findMachines(factory, SELLER_MACHINE)
+  return [...sellers, ...furnaces, ...transporters, ...starters]
 }
 
 const doTick = machines => {

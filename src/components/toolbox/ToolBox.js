@@ -25,7 +25,7 @@ export class ToolBox extends React.Component {
   render () {
     const machineSquares = []
     machineSquares.push(this.cell(<Starter />))
-    machineSquares.push(this.cell(<Seller id={2} key={2} />))
+    machineSquares.push(this.cell(<Seller direction={south()} />))
     machineSquares.push(this.cell(<Furnace direction={south()} />))
     machineSquares.push(this.cell(<Crafter id={4} key={4} />))
     machineSquares.push(this.cell(<Transporter direction={south()} />))

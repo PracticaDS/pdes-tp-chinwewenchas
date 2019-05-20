@@ -6,6 +6,7 @@ import {
   NONE_MACHINE,
   pointTo,
   rotateMachine,
+  SELLER_MACHINE,
   STARTER_MACHINE,
   tickMachine,
   TRANSPORTER_MACHINE,
@@ -18,7 +19,7 @@ import {
   materialTo,
   updatePositionWith
 } from '../factory/factoryLib'
-import { GOLD, isSolid, newMaterial, SILVER } from './materials'
+import { GOLD, isSolid, materialProfit, newMaterial, SILVER } from './materials'
 
 describe('machines', function () {
   let machinePosition = position(1, 1)
@@ -54,6 +55,16 @@ describe('machines', function () {
         expect(furnanceMachine.props.active).toBe(false)
         expect(furnanceMachine.props.direction).toEqual(south())
         expect(furnanceMachine.props.materials).toEqual([])
+      })
+    })
+    describe('when create a seller machine', () => {
+      const sellerMachine = newMachine(machinePosition, SELLER_MACHINE)
+      it('creates it with default props', () => {
+        expect(sellerMachine.type).toBe(SELLER_MACHINE)
+        expect(sellerMachine.props.position).toEqual(machinePosition)
+        expect(sellerMachine.props.active).toBe(false)
+        expect(sellerMachine.props.direction).toEqual(south())
+        expect(sellerMachine.props.materials).toEqual([])
       })
     })
     describe('when create a none machine', function () {
@@ -116,7 +127,12 @@ describe('machines', function () {
 
     const itAccumulatesMaterial = () => {
       let withMaterialMachine = withMaterial(
-        withMaterial(machine, someMaterials, fromMachine.props.position),
+        machine,
+        someMaterials,
+        fromMachine.props.position
+      )
+      withMaterialMachine = withMaterial(
+        withMaterialMachine,
         anotherMaterial,
         fromMachine.props.position
       )
@@ -226,6 +242,42 @@ describe('machines', function () {
             STARTER_MACHINE
           )
           itNotAccumulatesMaterial()
+        })
+      })
+    })
+    describe('when the receiver it is a seller machine', () => {
+      describe('when the seller direction is south', () => {
+        beforeEach(() => {
+          machine = newMachine(machinePosition, SELLER_MACHINE)
+          machine = pointTo(machine, south())
+        })
+        it('can receive material from north', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, north()),
+            STARTER_MACHINE
+          )
+          itAccumulatesMaterial()
+        })
+        it('can receive material from south', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, south()),
+            STARTER_MACHINE
+          )
+          itAccumulatesMaterial()
+        })
+        it('can receive material from east', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, east()),
+            STARTER_MACHINE
+          )
+          itAccumulatesMaterial()
+        })
+        it('can receive material from west', () => {
+          fromMachine = newMachine(
+            positionAt(machinePosition, west()),
+            STARTER_MACHINE
+          )
+          itAccumulatesMaterial()
         })
       })
     })
@@ -391,6 +443,38 @@ describe('machines', function () {
         expect(expectedTransporter.props.materials.length).toBe(2)
         expect(isSolid(expectedTransporter.props.materials[0])).toBe(false)
         expect(isSolid(expectedTransporter.props.materials[1])).toBe(false)
+      })
+    })
+    describe('when tick on a seller machine', () => {
+      let sellerPosition
+      let newFactory
+
+      beforeEach(() => {
+        sellerPosition = position(1, 1)
+        newFactory = addMachine(sellerPosition, SELLER_MACHINE, factory)
+      })
+      it('when the seller is empty', function () {
+        itReturnsTheFactoryUnmodified(machinePosition, newFactory)
+      })
+      it('when the seller has materials to sell', () => {
+        const fromPosition = positionAt(sellerPosition, north())
+        newFactory = machineDirectionTo(sellerPosition, south(), newFactory)
+        const gold = newMaterial(GOLD)
+        const silver = newMaterial(SILVER)
+        newFactory = materialTo(
+          sellerPosition,
+          [gold, silver],
+          newFactory,
+          fromPosition
+        )
+        newFactory = tickMachine(newFactory, sellerPosition)
+
+        const expectedSeller = machineAt(sellerPosition, newFactory)
+        const expectedSells = materialProfit(gold) + materialProfit(silver)
+
+        expect(expectedSeller.props.materials.length).toBe(0)
+        expect(expectedSeller.props.active).toBe(false)
+        expect(newFactory.totalSells).toBe(expectedSells)
       })
     })
     it('when tick on any other machineCreator', () => {
