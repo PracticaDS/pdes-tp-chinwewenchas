@@ -75,6 +75,19 @@ const sellerMachine = position => {
     }
   }
 }
+
+export const CRAFTER_MACHINE = 'CRAFTER_MACHINE'
+const crafterMachine = position => {
+  return {
+    type: CRAFTER_MACHINE,
+    props: {
+      position: position,
+      active: false,
+      direction: south(),
+      materials: []
+    }
+  }
+}
 export const isNoneMachine = machine => {
   return machine.type === NONE_MACHINE
 }
@@ -89,6 +102,8 @@ export const newMachine = (position, machineType) => {
       return furnanceMachine(position)
     case SELLER_MACHINE:
       return sellerMachine(position)
+    case CRAFTER_MACHINE:
+      return crafterMachine(position)
     default:
       return noneMachine(position)
   }
@@ -105,6 +120,8 @@ export const tickMachine = (factory, position) => {
       return tickToFurnace(factory, machine)
     case SELLER_MACHINE:
       return tickToSeller(factory, machine)
+    case CRAFTER_MACHINE:
+      return tickToCrafter(factory, machine)
     default:
       return factory
   }
@@ -156,6 +173,16 @@ const tickToTransporter = (factory, machine) => {
   )
 }
 
+const tickToCrafter = (factory, machine) => {
+  const materials = machine.props.materials
+  const newfactory = withMaterialsTick(factory, machine, materials)
+  return updatePositionWith(
+    machine.props.position,
+    machine => clearMaterials(machine),
+    newfactory
+  )
+}
+
 const clearMaterials = transporter => {
   return {
     ...transporter,
@@ -184,7 +211,10 @@ export const rotateMachine = machine => {
     ...machine,
     props: {
       ...machine.props,
-      direction: turnClockwise(machine.props.direction)
+
+      direction: machine.props.direction
+        ? turnClockwise(machine.props.direction)
+        : undefined
     }
   }
 }
@@ -205,6 +235,8 @@ export const withMaterial = (machine, materials, fromPosition = undefined) => {
       return materialForFurnace(machine, materials, fromPosition)
     case SELLER_MACHINE:
       return materialForSeller(machine, materials, fromPosition)
+    case CRAFTER_MACHINE:
+      return materialForCrafter(machine, materials, fromPosition)
     default:
       return machine
   }
@@ -274,6 +306,27 @@ const materialForTransporter = (machine, materials, fromPosition) => {
         active: true
       }
     }
+  }
+}
+
+const materialForCrafter = (machine, materials, fromPosition) => {
+  if (
+    isPositionAtDirection(
+      machine.props.position,
+      opositeDirection(machine.props.direction),
+      fromPosition
+    )
+  ) {
+    return {
+      ...machine,
+      props: {
+        ...machine.props,
+        materials: [...machine.props.materials, ...materials],
+        active: true
+      }
+    }
+  } else {
+    return machine
   }
 }
 

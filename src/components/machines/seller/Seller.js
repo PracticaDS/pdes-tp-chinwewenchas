@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { Machine } from '../machine/Machine'
 import PropTypes from 'prop-types'
 

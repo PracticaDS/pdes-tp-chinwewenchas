@@ -32,6 +32,29 @@ export const rotateMachine = position => {
   }
 }
 
+export const POSITION = 'POSITION'
+export const actualPosition = position => {
+  return {
+    type: POSITION,
+    position
+  }
+}
+
+export const REMOVE_MACHINE = 'REMOVE_MACHINE'
+export const removeMachine = position => {
+  return {
+    type: REMOVE_MACHINE,
+    position
+  }
+}
+
+export const MOVE_MACHINE = 'MOVE_MACHINE'
+export const moveMachine = position => {
+  return {
+    type: MOVE_MACHINE,
+    position
+  }
+}
 export const TICK = 'TICK'
 export const tick = () => {
   return (dispatch, getState) => {

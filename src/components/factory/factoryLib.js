@@ -32,7 +32,12 @@ export const createFactoryBoard = size => {
       return rows
     }, {})
 
-  return { ...board, rows: size, columns: size, totalSells: 0 }
+  return {
+    ...board,
+    rows: size,
+    columns: size,
+    totalSells: 0
+  }
 }
 
 export const addToSells = (sells, factory) => {
@@ -51,15 +56,50 @@ export const tick = (machinesPositions, state) => {
 
 export const addMachine = (position, machineType, factory) => {
   return updatePositionWith(
-    position,
-    _ => newMachine(position, machineType),
+    factory.actualPosition ? factory.actualPosition : position,
+    _ =>
+      newMachine(
+        factory.actualPosition ? factory.actualPosition : position,
+        machineType
+      ),
     factory
   )
 }
 
+export const removeMachine = (position, factory) => {
+  return updatePositionWith(
+    factory.actualPosition ? factory.actualPosition : position,
+    _ => NONE_MACHINE,
+    factory
+  )
+}
+
+export const moveMachine = (position, factory) => {
+  return updatePositionWith(factory.actualPosition, _ => NONE_MACHINE, {
+    ...factory,
+    actualMovingMachine: machineAt(factory.actualPosition, factory)
+  })
+}
+
+export const actualPosition = (position, factory) => {
+  let newState = {
+    ...factory,
+    actualPosition: position
+  }
+  if (factory.actualMovingMachine) {
+    return updatePositionWith(
+      newState.actualPosition,
+      machine => newState.actualMovingMachine,
+      newState
+    )
+  } else {
+    return newState
+  }
+}
+
 export const findAndRotateMachine = (position, factory) => {
   return updatePositionWith(
-    position,
+    factory.actualPosition ? factory.actualPosition : position,
     machine => rotateMachine(machine),
     factory
   )
@@ -86,6 +126,7 @@ export function machineAt (position, factory) {
 
 export function updatePositionWith (position, callback, factory) {
   let machine = machineAt(position, factory)
+  delete factory.actualMovingMachine
   return {
     ...factory,
     [row(position)]: {

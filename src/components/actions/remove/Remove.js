@@ -1,9 +1,21 @@
 import React from 'react'
+import { Machine } from '../../machines/machine/Machine'
+import PropTypes from 'prop-types'
 
-import './Remove.css'
+export const Remove = ({ active, direction }) => {
+  return (
+    <div className="remove">
+      <Machine
+        active={active}
+        direction={direction}
+        activeImg="icons/eliminar_active.svg"
+        inactiveImg="icons/eliminar.svg"
+      />
+    </div>
+  )
+}
 
-export class Remove extends React.Component {
-  render () {
-    return <div className="remove" />
-  }
+Remove.propTypes = {
+  active: PropTypes.bool,
+  direction: PropTypes.object
 }

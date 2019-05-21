@@ -1,9 +1,21 @@
 import React from 'react'
+import { Machine } from '../machine/Machine'
+import PropTypes from 'prop-types'
 
-import './Crafter.css'
+export const Crafter = ({ active, direction }) => {
+  return (
+    <div className="crafter">
+      <Machine
+        active={active}
+        direction={direction}
+        activeImg="icons/crafter_active.svg"
+        inactiveImg="icons/crafter.svg"
+      />
+    </div>
+  )
+}
 
-export class Crafter extends React.Component {
-  render () {
-    return <div className="crafter" />
-  }
+Crafter.propTypes = {
+  active: PropTypes.bool,
+  direction: PropTypes.object
 }
