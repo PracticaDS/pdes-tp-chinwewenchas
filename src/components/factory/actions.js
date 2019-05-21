@@ -5,6 +5,7 @@ import {
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines/machines'
+import { ADD_MACHINE_ACTION } from './factoryLib'
 
 export const MATERIAL_FOR_STARTER = 'MATERIAL_FOR_STARTER'
 export const materialForStarter = (position, material) => {
@@ -54,10 +55,11 @@ export const tickTimer = timer => {
 }
 
 const findMachines = (factory, machineType) => {
-  return Object.keys(factory)
+  const { rows, columns, totalSells, actionSelected, ...board } = factory
+  return Object.keys(board)
     .map(row => {
-      return Object.keys(factory[row])
-        .filter(col => isOfType(factory[row][col], machineType))
+      return Object.keys(board[row])
+        .filter(col => isOfType(board[row][col], machineType))
         .map(col => {
           return { y: row, x: col }
         })
@@ -76,5 +78,26 @@ const doTick = machines => {
   return {
     type: TICK,
     machines: machines
+  }
+}
+
+export const SELECT_MACHINE = 'SELECT_MACHINE'
+export const selectMachineForAddition = machineType => {
+  return {
+    type: SELECT_MACHINE,
+    machineType: machineType,
+    actionType: ADD_MACHINE_ACTION
+  }
+}
+
+export const positionSelected = position => {
+  return (dispatch, getState) => {
+    const { machineType, actionType } = getState().factory.actionSelected
+    if (machineType && actionType) {
+      switch (actionType) {
+        case ADD_MACHINE_ACTION:
+          dispatch(addMachine(position, machineType))
+      }
+    }
   }
 }

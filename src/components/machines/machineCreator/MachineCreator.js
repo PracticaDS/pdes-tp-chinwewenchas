@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Starter from '../starter/Starter'
-import { NoneMachine } from '../none_machine/NoneMachine'
+import NoneMachine from '../none_machine/NoneMachine'
 import {
   FURNACE_MACHINE,
   SELLER_MACHINE,
@@ -28,7 +28,7 @@ function mapMachine (machine) {
 }
 
 export const MachineCreator = ({ machine }) => {
-  return <div>{mapMachine(machine)}</div>
+  return <Fragment>{mapMachine(machine)}</Fragment>
 }
 
 MachineCreator.propTypes = {
