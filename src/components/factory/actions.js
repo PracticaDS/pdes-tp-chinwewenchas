@@ -118,6 +118,9 @@ export const positionSelected = position => {
           break
         case REMOVE_MACHINE_ACTION:
           dispatch(removeMachine(position))
+          break
+        default:
+          break
       }
     }
   }
