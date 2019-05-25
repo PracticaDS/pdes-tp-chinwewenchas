@@ -97,6 +97,9 @@ export const positionSelected = position => {
       switch (actionType) {
         case ADD_MACHINE_ACTION:
           dispatch(addMachine(position, machineType))
+          break
+        default:
+          break
       }
     }
   }
