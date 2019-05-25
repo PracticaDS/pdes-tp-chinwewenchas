@@ -3,6 +3,8 @@ import React from 'react'
 import { selectMachineForAddition } from '../factory/actions'
 import { connect } from 'react-redux'
 import './AddMachine.css'
+import { ADD_MACHINE_ACTION } from '../factory/factoryLib'
+
 export const AddMachine = ({
   machineType,
   children,
@@ -28,8 +30,13 @@ AddMachine.propTypes = {
 }
 
 const mapStateToProps = state => {
+  const sameActionType =
+    state.factory.actionSelected.actionType === ADD_MACHINE_ACTION
+  const selectedMachineType = sameActionType
+    ? state.factory.actionSelected.payload
+    : undefined
   return {
-    selectedMachineType: state.factory.actionSelected.machineType
+    selectedMachineType: selectedMachineType
   }
 }
 const mapDispatchToProps = dispatch => {

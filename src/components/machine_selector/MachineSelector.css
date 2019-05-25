@@ -1,0 +1,8 @@
+.machine_selector {
+    height: 100%;
+    width: 100%;
+}
+
+.machine_selector:hover {
+    cursor: pointer;
+}

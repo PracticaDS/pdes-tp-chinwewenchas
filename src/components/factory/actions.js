@@ -5,7 +5,7 @@ import {
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines/machines'
-import { ADD_MACHINE_ACTION } from './factoryLib'
+import { ADD_MACHINE_ACTION, REMOVE_MACHINE_ACTION } from './factoryLib'
 
 export const MATERIAL_FOR_STARTER = 'MATERIAL_FOR_STARTER'
 export const materialForStarter = (position, material) => {
@@ -22,6 +22,14 @@ export const addMachine = (position, machineType) => {
     type: ADD_MACHINE,
     machineType: machineType,
     position
+  }
+}
+
+export const REMOVE_MACHINE = 'REMOVE_MACHINE'
+const removeMachine = position => {
+  return {
+    type: REMOVE_MACHINE,
+    position: position
   }
 }
 
@@ -81,22 +89,35 @@ const doTick = machines => {
   }
 }
 
-export const SELECT_MACHINE = 'SELECT_MACHINE'
+export const TOOLBOX_ACTION = 'TOOLBOX_ACTION'
 export const selectMachineForAddition = machineType => {
   return {
-    type: SELECT_MACHINE,
-    machineType: machineType,
+    type: TOOLBOX_ACTION,
+    payload: machineType,
     actionType: ADD_MACHINE_ACTION
+  }
+}
+
+export const activateMachineRemoval = () => {
+  return {
+    type: TOOLBOX_ACTION,
+    payload: undefined,
+    actionType: REMOVE_MACHINE_ACTION
   }
 }
 
 export const positionSelected = position => {
   return (dispatch, getState) => {
-    const { machineType, actionType } = getState().factory.actionSelected
-    if (machineType && actionType) {
+    const { payload, actionType } = getState().factory.actionSelected
+    if (actionType) {
       switch (actionType) {
         case ADD_MACHINE_ACTION:
-          dispatch(addMachine(position, machineType))
+          if (payload) {
+            dispatch(addMachine(position, payload))
+          }
+          break
+        case REMOVE_MACHINE_ACTION:
+          dispatch(removeMachine(position))
       }
     }
   }

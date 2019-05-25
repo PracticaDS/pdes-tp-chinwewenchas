@@ -1,0 +1,7 @@
+.remove_machine_active {
+  background-color: blue;
+}
+
+.remove_machine:hover {
+  cursor: pointer;
+}

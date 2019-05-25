@@ -1,7 +1,6 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Starter from '../starter/Starter'
-import NoneMachine from '../none_machine/NoneMachine'
 import {
   FURNACE_MACHINE,
   SELLER_MACHINE,
@@ -11,6 +10,8 @@ import {
 import { Transporter } from '../transporter/Transporter'
 import { Furnace } from '../furnace/Furnace'
 import { Seller } from '../seller/Seller'
+import MachineSelector from '../../machine_selector/MachineSelector'
+import { NoneMachine } from '../none_machine/NoneMachine'
 
 function mapMachine (machine) {
   switch (machine.type) {
@@ -28,7 +29,11 @@ function mapMachine (machine) {
 }
 
 export const MachineCreator = ({ machine }) => {
-  return <Fragment>{mapMachine(machine)}</Fragment>
+  return (
+    <MachineSelector position={machine.props.position}>
+      {mapMachine(machine)}
+    </MachineSelector>
+  )
 }
 
 MachineCreator.propTypes = {

@@ -1,7 +1,7 @@
 import { RawMaterialPopup } from './RawMaterialPopup'
 import React from 'react'
 import { mount } from 'enzyme'
-import { toggleRawMaterialPopup } from './actions'
+import { doToggle } from './actions'
 import rawMaterialPopUpReducer from './reducer'
 import { TestProvider } from '../tests_helpers/TestProvider'
 
@@ -31,9 +31,7 @@ describe('the raw material popup reducer', function () {
   let state = { visible: false }
   describe('when receive the open action', function () {
     it('toggle de open prop', function () {
-      expect(
-        rawMaterialPopUpReducer(state, toggleRawMaterialPopup()).visible
-      ).toBe(true)
+      expect(rawMaterialPopUpReducer(state, doToggle()).visible).toBe(true)
     })
   })
   describe('when receive other action', function () {

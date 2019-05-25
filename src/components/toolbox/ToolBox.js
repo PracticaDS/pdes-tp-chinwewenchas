@@ -19,6 +19,7 @@ import {
   TRANSPORTER_MACHINE
 } from '../machines/machines'
 import AddMachine from '../add_machine/AddMachine'
+import RemoveMachine from '../remove_machine/RemoveMachine'
 
 export const ToolBox = () => {
   return (
@@ -63,9 +64,11 @@ export const ToolBox = () => {
       <div className="title">Edición</div>
       <div className="toolbox-board">
         <div className="row">
-          <Cell>
-            <Remove id={1} key={1} />
-          </Cell>
+          <RemoveMachine>
+            <Cell>
+              <Remove />
+            </Cell>
+          </RemoveMachine>
           <Cell>
             <Move id={2} key={2} />
           </Cell>

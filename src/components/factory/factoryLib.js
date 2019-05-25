@@ -37,7 +37,19 @@ export const createFactoryBoard = size => {
     rows: size,
     columns: size,
     totalSells: 0,
-    actionSelected: {}
+    actionSelected: {
+      actionType: undefined,
+      payload: undefined
+    }
+  }
+}
+const resetActionSelected = factory => {
+  return {
+    ...factory,
+    actionSelected: {
+      action: undefined,
+      payload: undefined
+    }
   }
 }
 
@@ -55,11 +67,18 @@ export const tick = (machinesPositions, state) => {
   )
 }
 
+export const removeMachine = (position, factory) => {
+  return updatePositionWith(
+    position,
+    _ => newMachine(position, NONE_MACHINE),
+    resetActionSelected(factory)
+  )
+}
 export const addMachine = (position, machineType, factory) => {
   return updatePositionWith(
     position,
     _ => newMachine(position, machineType),
-    factory
+    resetActionSelected(factory)
   )
 }
 
@@ -102,3 +121,4 @@ export function updatePositionWith (position, callback, factory) {
 }
 
 export const ADD_MACHINE_ACTION = 'ADD_MACHINE_ACTION'
+export const REMOVE_MACHINE_ACTION = 'REMOVE_MACHINE_ACTION'
