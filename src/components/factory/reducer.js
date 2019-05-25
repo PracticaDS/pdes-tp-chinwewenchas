@@ -2,6 +2,7 @@ import {
   ADD_MACHINE,
   MATERIAL_FOR_STARTER,
   ROTATE,
+  SELECT_MACHINE,
   SET_TICK_TIMER,
   TICK
 } from './actions'
@@ -33,6 +34,14 @@ export default (state = initialState, action) => {
       return tick(action.machines, state)
     case SET_TICK_TIMER:
       return { ...state, timer: action.timer }
+    case SELECT_MACHINE:
+      return {
+        ...state,
+        actionSelected: {
+          machineType: action.machineType,
+          actionType: action.actionType
+        }
+      }
     default:
       return state
   }

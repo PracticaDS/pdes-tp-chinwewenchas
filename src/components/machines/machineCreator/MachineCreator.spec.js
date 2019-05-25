@@ -75,7 +75,7 @@ describe('machineCreator component', () => {
           <MachineCreator machine={machineToRender} />
         </TestProvider>
       )
-      expect(machine.exists('.none-machine')).toBe(true)
+      expect(machine.exists('.none_machine')).toBe(true)
     })
   })
 })
