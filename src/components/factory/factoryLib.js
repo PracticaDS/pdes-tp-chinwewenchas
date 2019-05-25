@@ -36,7 +36,8 @@ export const createFactoryBoard = size => {
     ...board,
     rows: size,
     columns: size,
-    totalSells: 0
+    totalSells: 0,
+    actionSelected: {}
   }
 }
 
@@ -135,3 +136,5 @@ export function updatePositionWith (position, callback, factory) {
     }
   }
 }
+
+export const ADD_MACHINE_ACTION = 'ADD_MACHINE_ACTION'

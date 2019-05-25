@@ -1,4 +1,5 @@
 import React from 'react'
+import './ToolBox.css'
 import { Seller } from '../machines/seller/Seller'
 import { Furnace } from '../machines/furnace/Furnace'
 import { Crafter } from '../machines/crafter/Crafter'
@@ -6,68 +7,58 @@ import { Transporter } from '../machines/transporter/Transporter'
 import { Remove } from '../actions/remove/Remove'
 import { Move } from '../actions/move/Move'
 import { Rotate } from '../actions/rotate/Rotate'
-import './ToolBox.css'
-import { Starter } from '../machines/starter/StarterToolbox'
+import { Starter } from '../machines/starter/Starter'
 import { Cell } from '../cell/Cell'
 import { south } from '../machines/direction'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { addMachine, rotateMachine, tick } from '../factory/actions'
 import {
   FURNACE_MACHINE,
+  NONE_MACHINE,
   SELLER_MACHINE,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE,
   CRAFTER_MACHINE
 } from '../machines/machines'
+import AddMachine from '../add_machine/AddMachine'
 
-export const ToolBox = ({
-  factory,
-  addStarter,
-  addTransporter,
-  addFurnace,
-  addSeller,
-  addCrafter,
-  rotate,
-  tick
-}) => {
+export const ToolBox = () => {
   return (
     <div className="toolbox-container">
       <div className="title">Máquinas</div>
       <div className="toolbox-board">
         <div className="row">
-          <div onClick={addStarter}>
+          <AddMachine machineType={STARTER_MACHINE}>
             <Cell>
-              <Starter active={false} direction={south()} />
+              <Starter direction={south()} onClick={() => {}} />
             </Cell>
-          </div>
-          <div onClick={addSeller}>
+          </AddMachine>
+          <AddMachine machineType={SELLER_MACHINE}>
             <Cell>
-              <Seller active={false} direction={south()} materials={[]} />
+              <Seller direction={south()} />
             </Cell>
-          </div>
+          </AddMachine>
         </div>
 
         <div className="row">
-          <div onClick={addFurnace}>
+          <AddMachine machineType={FURNACE_MACHINE}>
             <Cell>
-              <Furnace active={false} direction={south()} materials={[]} />
+              <Furnace direction={south()} />
             </Cell>
-          </div>
-          <div onClick={addCrafter}>
+          </AddMachine>
+          <AddMachine machineType={CRAFTER_MACHINE}>
             <Cell>
-              <Crafter active={false} direction={south()} materials={[]} />
+              <Crafter direction={south()} />
             </Cell>
-          </div>
+          </AddMachine>
         </div>
-
         <div className="row">
-          <div onClick={addTransporter}>
+          <AddMachine machineType={TRANSPORTER_MACHINE}>
             <Cell>
-              <Transporter active={false} direction={south()} materials={[]} />
+              <Transporter direction={south()} />
             </Cell>
-          </div>
-          <Cell />
+          </AddMachine>
+          <AddMachine machineType={NONE_MACHINE}>
+            <Cell />
+          </AddMachine>
         </div>
       </div>
 
@@ -75,67 +66,19 @@ export const ToolBox = ({
       <div className="toolbox-board">
         <div className="row">
           <Cell>
-            <Remove active={false} direction={south()} />
+            <Remove id={1} key={1} />
           </Cell>
           <Cell>
-            <Move active={false} direction={south()} />
+            <Move id={2} key={2} />
           </Cell>
         </div>
-
         <div className="row">
-          <div onClick={rotate}>
-            <Cell>
-              <Rotate active={false} direction={south()} />
-            </Cell>
-          </div>
+          <Cell>
+            <Rotate id={3} key={3} />
+          </Cell>
           <Cell />
         </div>
       </div>
     </div>
   )
 }
-
-ToolBox.propTypes = {
-  factory: PropTypes.object,
-  addStarter: PropTypes.func,
-  addTransporter: PropTypes.func,
-  addFurnace: PropTypes.func,
-  addSeller: PropTypes.func,
-  addCrafter: PropTypes.func,
-  rotate: PropTypes.func,
-  tick: PropTypes.func
-}
-
-const mapStateToProps = state => {
-  return {
-    factory: state.factory
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addStarter: () => {
-      dispatch(addMachine({ y: 1, x: 1 }, STARTER_MACHINE))
-    },
-    addTransporter: () => {
-      dispatch(addMachine({ y: 2, x: 1 }, TRANSPORTER_MACHINE))
-    },
-    addFurnace: () => {
-      dispatch(addMachine({ y: 3, x: 1 }, FURNACE_MACHINE))
-    },
-    addSeller: () => {
-      dispatch(addMachine({ y: 4, x: 1 }, SELLER_MACHINE))
-    },
-    addCrafter: () => {
-      dispatch(addMachine({ y: 5, x: 1 }, CRAFTER_MACHINE))
-    },
-    rotate: () => dispatch(rotateMachine({ y: 1, x: 1 })),
-    tick: () => dispatch(tick())
-  }
-}
-
-const connector = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)
-export default connector(ToolBox)

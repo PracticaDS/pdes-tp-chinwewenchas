@@ -1,0 +1,7 @@
+.add_machine_active {
+  background-color: blue;
+}
+
+.add_machine:hover {
+  cursor: pointer;
+}
