@@ -6,6 +6,7 @@ import {
   POSITION,
   ROTATE,
   SELECT_MACHINE,
+  SELECT_ACTION,
   SET_TICK_TIMER,
   TICK
 } from './actions'
@@ -47,6 +48,14 @@ export default (state = initialState, action) => {
     case SET_TICK_TIMER:
       return { ...state, timer: action.timer }
     case SELECT_MACHINE:
+      return {
+        ...state,
+        actionSelected: {
+          machineType: action.machineType,
+          actionType: action.actionType
+        }
+      }
+    case SELECT_ACTION:
       return {
         ...state,
         actionSelected: {

@@ -14,7 +14,7 @@ describe('factory lib', function () {
       expect(emptyFactory()).toEqual({ rows: 0, columns: 0, totalSells: 0 })
     })
   })
-  describe('create factory board', () => {
+  xdescribe('create factory board', () => {
     function itCellIs (position, machine, factory) {
       it(`cell in position ${row(position)} ${column(
         position
@@ -55,7 +55,7 @@ describe('factory lib', function () {
   })
 
   describe('add a machineCreator', () => {
-    describe('when there are no machineCreator at that position', () => {
+    xdescribe('when there are no machineCreator at that position', () => {
       let factory = emptyFactory()
       it('adds it', () => {
         let machinePosition = position(0, 0)
@@ -64,7 +64,7 @@ describe('factory lib', function () {
         ).toEqual(newMachine(machinePosition, NONE_MACHINE))
       })
     })
-    describe('when there are a machineCreator at that position', () => {
+    xdescribe('when there are a machineCreator at that position', () => {
       let factory = createFactoryBoard(1)
       it('replace it', () => {
         let machinePosition = position(0, 0)

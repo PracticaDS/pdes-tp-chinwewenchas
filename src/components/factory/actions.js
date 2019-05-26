@@ -1,11 +1,18 @@
 import {
+  NONE_MACHINE,
   FURNACE_MACHINE,
   isOfType,
   SELLER_MACHINE,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines/machines'
-import { ADD_MACHINE_ACTION } from './factoryLib'
+import { openRawMaterialSelector } from '../raw_material_selector/actions'
+import {
+  ADD_MACHINE_ACTION,
+  ROTATE_MACHINE_ACTION,
+  MOVE_MACHINE_ACTION,
+  REMOVE_MACHINE_ACTION
+} from './factoryLib'
 
 export const MATERIAL_FOR_STARTER = 'MATERIAL_FOR_STARTER'
 export const materialForStarter = (position, material) => {
@@ -113,6 +120,23 @@ export const selectMachineForAddition = machineType => {
   }
 }
 
+export const SELECT_ACTION = 'SELECT_ACTION'
+export const selectActionForMachine = actionType => {
+  return {
+    type: SELECT_ACTION,
+    machineType: NONE_MACHINE,
+    actionType: actionType
+  }
+}
+
+export const cleanActionState = () => {
+  return {
+    type: SELECT_ACTION,
+    machineType: undefined,
+    actionType: undefined
+  }
+}
+
 export const positionSelected = position => {
   return (dispatch, getState) => {
     const { machineType, actionType } = getState().factory.actionSelected
@@ -120,10 +144,25 @@ export const positionSelected = position => {
       switch (actionType) {
         case ADD_MACHINE_ACTION:
           dispatch(addMachine(position, machineType))
+          dispatch(cleanActionState())
+          break
+        case ROTATE_MACHINE_ACTION:
+          dispatch(rotateMachine(position))
+          dispatch(cleanActionState())
+          break
+        case REMOVE_MACHINE_ACTION:
+          dispatch(removeMachine(position))
+          dispatch(cleanActionState())
+          break
+        case MOVE_MACHINE_ACTION:
+          dispatch(moveMachine(position))
+          dispatch(cleanActionState())
           break
         default:
           break
       }
+    } else {
+      dispatch(openRawMaterialSelector(position))
     }
   }
 }

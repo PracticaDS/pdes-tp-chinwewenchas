@@ -1,0 +1,7 @@
+.action_machine_active {
+  background-color: blue;
+}
+
+.action_machine:hover {
+  cursor: pointer;
+}

@@ -19,6 +19,12 @@ import {
   CRAFTER_MACHINE
 } from '../machines/machines'
 import AddMachine from '../add_machine/AddMachine'
+import ActionForMachine from '../action_machine/ActionForMachine'
+import {
+  ROTATE_MACHINE_ACTION,
+  MOVE_MACHINE_ACTION,
+  REMOVE_MACHINE_ACTION
+} from '../factory/factoryLib'
 
 export const ToolBox = () => {
   return (
@@ -33,7 +39,7 @@ export const ToolBox = () => {
           </AddMachine>
           <AddMachine machineType={SELLER_MACHINE}>
             <Cell>
-              <Seller direction={south()} />
+              <Seller direction={south()} onClick={() => {}} />
             </Cell>
           </AddMachine>
         </div>
@@ -41,19 +47,19 @@ export const ToolBox = () => {
         <div className="row">
           <AddMachine machineType={FURNACE_MACHINE}>
             <Cell>
-              <Furnace direction={south()} />
+              <Furnace direction={south()} onClick={() => {}} />
             </Cell>
           </AddMachine>
           <AddMachine machineType={CRAFTER_MACHINE}>
             <Cell>
-              <Crafter direction={south()} />
+              <Crafter direction={south()} onClick={() => {}} />
             </Cell>
           </AddMachine>
         </div>
         <div className="row">
           <AddMachine machineType={TRANSPORTER_MACHINE}>
             <Cell>
-              <Transporter direction={south()} />
+              <Transporter direction={south()} onClick={() => {}} />
             </Cell>
           </AddMachine>
           <AddMachine machineType={NONE_MACHINE}>
@@ -65,17 +71,23 @@ export const ToolBox = () => {
       <div className="title">Edición</div>
       <div className="toolbox-board">
         <div className="row">
-          <Cell>
-            <Remove id={1} key={1} />
-          </Cell>
-          <Cell>
-            <Move id={2} key={2} />
-          </Cell>
+          <ActionForMachine actionType={REMOVE_MACHINE_ACTION}>
+            <Cell>
+              <Remove direction={south()} />
+            </Cell>
+          </ActionForMachine>
+          <ActionForMachine actionType={MOVE_MACHINE_ACTION}>
+            <Cell>
+              <Move direction={south()} />
+            </Cell>
+          </ActionForMachine>
         </div>
         <div className="row">
-          <Cell>
-            <Rotate id={3} key={3} />
-          </Cell>
+          <ActionForMachine actionType={ROTATE_MACHINE_ACTION}>
+            <Cell>
+              <Rotate direction={south()} />
+            </Cell>
+          </ActionForMachine>
           <Cell />
         </div>
       </div>

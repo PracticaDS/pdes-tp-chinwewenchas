@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Starter.css'
 import { connect } from 'react-redux'
-import { openRawMaterialSelector } from '../../raw_material_selector/actions'
+import { positionSelected } from '../../factory/actions'
 import { Machine } from '../machine/Machine'
 
 export const Starter = ({ position, active, onClick, direction }) => {
@@ -26,7 +26,9 @@ Starter.propTypes = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onClick: position => dispatch(openRawMaterialSelector(position))
+  onClick: position => {
+    dispatch(positionSelected(position))
+  }
 })
 const connector = connect(
   undefined,

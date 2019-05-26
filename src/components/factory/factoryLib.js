@@ -138,3 +138,6 @@ export function updatePositionWith (position, callback, factory) {
 }
 
 export const ADD_MACHINE_ACTION = 'ADD_MACHINE_ACTION'
+export const ROTATE_MACHINE_ACTION = 'ROTATE_MACHINE_ACTION'
+export const MOVE_MACHINE_ACTION = 'MOVE_MACHINE_ACTION'
+export const REMOVE_MACHINE_ACTION = 'REMOVE_MACHINE_ACTION'
