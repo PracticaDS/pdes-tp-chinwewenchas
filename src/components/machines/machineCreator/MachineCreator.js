@@ -2,10 +2,10 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Starter from '../starter/Starter'
 import NoneMachine from '../none_machine/NoneMachine'
-import { Transporter } from '../transporter/Transporter'
-import { Furnace } from '../furnace/Furnace'
-import { Seller } from '../seller/Seller'
-import { Crafter } from '../crafter/Crafter'
+import Transporter from '../transporter/Transporter'
+import Furnace from '../furnace/Furnace'
+import Seller from '../seller/Seller'
+import Crafter from '../crafter/Crafter'
 import {
   FURNACE_MACHINE,
   SELLER_MACHINE,
