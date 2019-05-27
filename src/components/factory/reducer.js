@@ -3,7 +3,6 @@ import {
   REMOVE_MACHINE,
   MOVE_MACHINE,
   MATERIAL_FOR_STARTER,
-  POSITION,
   ROTATE,
   SELECT_MACHINE,
   SELECT_ACTION,
@@ -14,7 +13,6 @@ import {
   addMachine,
   removeMachine,
   moveMachine,
-  actualPosition,
   createFactoryBoard,
   findAndRotateMachine,
   materialTo,
@@ -41,8 +39,6 @@ export default (state = initialState, action) => {
       return removeMachine(action.position, state)
     case MOVE_MACHINE:
       return moveMachine(action.position, state)
-    case POSITION:
-      return actualPosition(action.position, state)
     case TICK:
       return tick(action.machines, state)
     case SET_TICK_TIMER:

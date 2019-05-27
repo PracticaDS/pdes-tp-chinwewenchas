@@ -4,7 +4,8 @@ import {
   isOfType,
   SELLER_MACHINE,
   STARTER_MACHINE,
-  TRANSPORTER_MACHINE
+  TRANSPORTER_MACHINE,
+  CRAFTER_MACHINE
 } from '../machines/machines'
 import { openRawMaterialSelector } from '../raw_material_selector/actions'
 import {
@@ -36,14 +37,6 @@ export const ROTATE = 'ROTATE'
 export const rotateMachine = position => {
   return {
     type: ROTATE,
-    position
-  }
-}
-
-export const POSITION = 'POSITION'
-export const actualPosition = position => {
-  return {
-    type: POSITION,
     position
   }
 }
@@ -101,7 +94,8 @@ const findMachinesToTick = factory => {
   const transporters = findMachines(factory, TRANSPORTER_MACHINE)
   const furnaces = findMachines(factory, FURNACE_MACHINE)
   const sellers = findMachines(factory, SELLER_MACHINE)
-  return [...sellers, ...furnaces, ...transporters, ...starters]
+  const crafters = findMachines(factory, CRAFTER_MACHINE)
+  return [...sellers, ...furnaces, ...transporters, ...starters, ...crafters]
 }
 
 const doTick = machines => {
@@ -156,7 +150,6 @@ export const positionSelected = position => {
           break
         case MOVE_MACHINE_ACTION:
           dispatch(moveMachine(position))
-          dispatch(cleanActionState())
           break
         default:
           break

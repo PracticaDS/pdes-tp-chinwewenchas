@@ -9,10 +9,10 @@ export const Transporter = ({ position, active, onClick, direction }) => {
   return (
     <div className="transporter" onClick={() => onClick(position)}>
       <Machine
-        active={active}
         direction={direction}
         activeImg="icons/transporter_active.svg"
         inactiveImg="icons/transporter.svg"
+        active={active}
       />
     </div>
   )
@@ -25,11 +25,12 @@ Transporter.propTypes = {
   direction: PropTypes.object
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onClick: position => dispatch(positionSelected(position))
+const mapDispatchToProps = dispatch => ({
+  onClick: position => {
+    dispatch(positionSelected(position))
   }
-}
+})
+
 const connector = connect(
   undefined,
   mapDispatchToProps

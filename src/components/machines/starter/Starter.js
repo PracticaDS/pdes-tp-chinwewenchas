@@ -30,6 +30,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(positionSelected(position))
   }
 })
+
 const connector = connect(
   undefined,
   mapDispatchToProps

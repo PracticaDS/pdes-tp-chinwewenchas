@@ -1,17 +1,18 @@
 import React from 'react'
-import { Machine } from '../machine/Machine'
 import PropTypes from 'prop-types'
-import { positionSelected } from '../../factory/actions'
+import './Seller.css'
 import { connect } from 'react-redux'
+import { positionSelected } from '../../factory/actions'
+import { Machine } from '../machine/Machine'
 
-export const Seller = ({ position, active, direction, onClick }) => {
+export const Seller = ({ position, active, onClick, direction }) => {
   return (
     <div className="seller" onClick={() => onClick(position)}>
       <Machine
-        active={active}
         direction={direction}
         activeImg="icons/seller_active.svg"
         inactiveImg="icons/seller.svg"
+        active={active}
       />
     </div>
   )
@@ -19,18 +20,19 @@ export const Seller = ({ position, active, direction, onClick }) => {
 
 Seller.propTypes = {
   active: PropTypes.bool,
-  direction: PropTypes.object,
   onClick: PropTypes.func,
-  position: PropTypes.object
+  position: PropTypes.object,
+  direction: PropTypes.object
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onClick: position => dispatch(positionSelected(position))
+const mapDispatchToProps = dispatch => ({
+  onClick: position => {
+    dispatch(positionSelected(position))
   }
-}
+})
 
-export default connect(
+const connector = connect(
   undefined,
   mapDispatchToProps
-)(Seller)
+)
+export default connector(Seller)

@@ -57,50 +57,34 @@ export const tick = (machinesPositions, state) => {
 
 export const addMachine = (position, machineType, factory) => {
   return updatePositionWith(
-    factory.actualPosition ? factory.actualPosition : position,
-    _ =>
-      newMachine(
-        factory.actualPosition ? factory.actualPosition : position,
-        machineType
-      ),
+    position,
+    _ => newMachine(position, machineType),
     factory
   )
 }
 
 export const removeMachine = (position, factory) => {
   return updatePositionWith(
-    factory.actualPosition ? factory.actualPosition : position,
-    _ => NONE_MACHINE,
+    position,
+    _ => newMachine(position, NONE_MACHINE),
     factory
   )
 }
 
 export const moveMachine = (position, factory) => {
-  return updatePositionWith(factory.actualPosition, _ => NONE_MACHINE, {
+  let machine = machineAt(position, factory)
+  return updatePositionWith(position, _ => newMachine(position, NONE_MACHINE), {
     ...factory,
-    actualMovingMachine: machineAt(factory.actualPosition, factory)
+    actionSelected: {
+      machineType: machine.type,
+      actionType: ADD_MACHINE_ACTION
+    }
   })
-}
-
-export const actualPosition = (position, factory) => {
-  let newState = {
-    ...factory,
-    actualPosition: position
-  }
-  if (factory.actualMovingMachine) {
-    return updatePositionWith(
-      newState.actualPosition,
-      machine => newState.actualMovingMachine,
-      newState
-    )
-  } else {
-    return newState
-  }
 }
 
 export const findAndRotateMachine = (position, factory) => {
   return updatePositionWith(
-    factory.actualPosition ? factory.actualPosition : position,
+    position,
     machine => rotateMachine(machine),
     factory
   )
