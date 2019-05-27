@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Starter from '../starter/Starter'
 import NoneMachine from '../none_machine/NoneMachine'
@@ -7,12 +7,13 @@ import Furnace from '../furnace/Furnace'
 import Seller from '../seller/Seller'
 import Crafter from '../crafter/Crafter'
 import {
+  CRAFTER_MACHINE,
   FURNACE_MACHINE,
   SELLER_MACHINE,
   STARTER_MACHINE,
-  TRANSPORTER_MACHINE,
-  CRAFTER_MACHINE
+  TRANSPORTER_MACHINE
 } from '../machines'
+import { column, row } from '../direction'
 
 function mapMachine (machine) {
   switch (machine.type) {
@@ -32,7 +33,15 @@ function mapMachine (machine) {
 }
 
 export const MachineCreator = ({ machine }) => {
-  return <Fragment>{mapMachine(machine)}</Fragment>
+  let position = machine.props.position
+  return (
+    <div
+      style={{ width: '100%', height: '100%' }}
+      position={`${row(position)}${column(position)}`}
+    >
+      {mapMachine(machine)}
+    </div>
+  )
 }
 
 MachineCreator.propTypes = {

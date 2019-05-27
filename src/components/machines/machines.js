@@ -220,7 +220,7 @@ export const pointTo = (machine, direction) => {
   return { ...machine, props: { ...machine.props, direction: direction } }
 }
 
-export const withMaterial = (machine, materials, fromPosition = undefined) => {
+export const withMaterial = (machine, materials, fromPosition) => {
   switch (machine.type) {
     case NONE_MACHINE:
       return materialForNoneMachine(machine, materials)
