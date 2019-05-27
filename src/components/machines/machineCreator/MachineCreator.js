@@ -2,15 +2,17 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Starter from '../starter/Starter'
 import NoneMachine from '../none_machine/NoneMachine'
+import Transporter from '../transporter/Transporter'
+import Furnace from '../furnace/Furnace'
+import Seller from '../seller/Seller'
+import Crafter from '../crafter/Crafter'
 import {
   FURNACE_MACHINE,
   SELLER_MACHINE,
   STARTER_MACHINE,
-  TRANSPORTER_MACHINE
+  TRANSPORTER_MACHINE,
+  CRAFTER_MACHINE
 } from '../machines'
-import { Transporter } from '../transporter/Transporter'
-import { Furnace } from '../furnace/Furnace'
-import { Seller } from '../seller/Seller'
 
 function mapMachine (machine) {
   switch (machine.type) {
@@ -22,6 +24,8 @@ function mapMachine (machine) {
       return <Furnace {...machine.props} />
     case SELLER_MACHINE:
       return <Seller {...machine.props} />
+    case CRAFTER_MACHINE:
+      return <Crafter {...machine.props} />
     default:
       return <NoneMachine {...machine.props} />
   }

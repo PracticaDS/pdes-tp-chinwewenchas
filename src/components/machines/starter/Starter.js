@@ -2,12 +2,38 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Starter.css'
 import { connect } from 'react-redux'
-import { openRawMaterialSelector } from '../../raw_material_selector/actions'
+import { positionSelected } from '../../factory/actions'
 import { Machine } from '../machine/Machine'
+import { openRawMaterialSelector } from '../../raw_material_selector/actions'
 
-export const Starter = ({ position, active, onClick, direction }) => {
+const onClick = (
+  position,
+  selectRawMaterial,
+  selectPosition,
+  actionSelected
+) => {
+  if (actionSelected) {
+    selectPosition(position)
+  } else {
+    selectRawMaterial(position)
+  }
+}
+
+export const Starter = ({
+  position,
+  active,
+  selectRawMaterial,
+  selectPosition,
+  actionSelected,
+  direction
+}) => {
   return (
-    <div className="starter" onClick={() => onClick(position)}>
+    <div
+      className="starter"
+      onClick={() =>
+        onClick(position, selectRawMaterial, selectPosition, actionSelected)
+      }
+    >
       <Machine
         direction={direction}
         activeImg="icons/starter_active.svg"
@@ -20,16 +46,26 @@ export const Starter = ({ position, active, onClick, direction }) => {
 
 Starter.propTypes = {
   active: PropTypes.bool,
-  onClick: PropTypes.func,
+  selectRawMaterial: PropTypes.func,
+  selectPosition: PropTypes.func,
+  actionSelected: PropTypes.string,
   position: PropTypes.object,
   direction: PropTypes.object
 }
 
+const mapStateToProps = state => {
+  return {
+    actionSelected: state.factory.actionSelected.actionType
+  }
+}
+
 const mapDispatchToProps = dispatch => ({
-  onClick: position => dispatch(openRawMaterialSelector(position))
+  selectRawMaterial: position => dispatch(openRawMaterialSelector(position)),
+  selectPosition: position => dispatch(positionSelected(position))
 })
+
 const connector = connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps
 )
 export default connector(Starter)

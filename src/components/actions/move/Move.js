@@ -1,9 +1,21 @@
 import React from 'react'
+import { Machine } from '../../machines/machine/Machine'
+import PropTypes from 'prop-types'
 
-import './Move.css'
+export const Move = ({ active, direction }) => {
+  return (
+    <div className="move">
+      <Machine
+        active={active}
+        direction={direction}
+        activeImg="icons/mover_active.svg"
+        inactiveImg="icons/mover.svg"
+      />
+    </div>
+  )
+}
 
-export class Move extends React.Component {
-  render () {
-    return <div className="move" />
-  }
+Move.propTypes = {
+  active: PropTypes.bool,
+  direction: PropTypes.object
 }

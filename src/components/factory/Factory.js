@@ -14,23 +14,25 @@ export const Factory = ({ factory, tick }) => {
     <Fragment>
       <div className="factory">
         <table>
-          {Object.keys(board)
-            .map(row => {
-              return (
-                <tr key={row}>
-                  {Object.keys(board[row]).map(col => {
-                    return (
-                      <td key={col}>
-                        <Cell className="factory_item">
-                          <MachineCreator machine={board[row][col]} />
-                        </Cell>
-                      </td>
-                    )
-                  })}
-                </tr>
-              )
-            })
-            .flat(1)}
+          <tbody>
+            {Object.keys(board)
+              .map(row => {
+                return (
+                  <tr key={row}>
+                    {Object.keys(board[row]).map(col => {
+                      return (
+                        <td key={col}>
+                          <Cell className="factory_item">
+                            <MachineCreator machine={board[row][col]} />
+                          </Cell>
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })
+              .flat(1)}
+          </tbody>
         </table>
       </div>
       <RawMaterialPopup />

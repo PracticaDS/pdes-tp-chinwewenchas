@@ -1,8 +1,10 @@
 import {
   ADD_MACHINE,
   MATERIAL_FOR_STARTER,
+  MOVE_MACHINE,
+  REMOVE_MACHINE,
   ROTATE,
-  SELECT_MACHINE,
+  SELECT_ACTION,
   SET_TICK_TIMER,
   TICK
 } from './actions'
@@ -11,6 +13,8 @@ import {
   createFactoryBoard,
   findAndRotateMachine,
   materialTo,
+  moveMachine,
+  removeMachine,
   tick,
   updatePositionWith
 } from './factoryLib'
@@ -30,11 +34,15 @@ export default (state = initialState, action) => {
       return addMachine(action.position, action.machineType, state)
     case ROTATE:
       return findAndRotateMachine(action.position, state)
+    case REMOVE_MACHINE:
+      return removeMachine(action.position, state)
+    case MOVE_MACHINE:
+      return moveMachine(action.position, state)
     case TICK:
       return tick(action.machines, state)
     case SET_TICK_TIMER:
       return { ...state, timer: action.timer }
-    case SELECT_MACHINE:
+    case SELECT_ACTION:
       return {
         ...state,
         actionSelected: {

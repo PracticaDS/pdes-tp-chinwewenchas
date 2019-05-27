@@ -1,24 +1,29 @@
 import React from 'react'
+import './ToolBox.css'
 import { Seller } from '../machines/seller/Seller'
 import { Furnace } from '../machines/furnace/Furnace'
 import { Crafter } from '../machines/crafter/Crafter'
 import { Transporter } from '../machines/transporter/Transporter'
-
 import { Remove } from '../actions/remove/Remove'
 import { Move } from '../actions/move/Move'
 import { Rotate } from '../actions/rotate/Rotate'
-import './ToolBox.css'
 import { Starter } from '../machines/starter/Starter'
 import { Cell } from '../cell/Cell'
 import { south } from '../machines/direction'
 import {
+  CRAFTER_MACHINE,
   FURNACE_MACHINE,
-  NONE_MACHINE,
   SELLER_MACHINE,
   STARTER_MACHINE,
   TRANSPORTER_MACHINE
 } from '../machines/machines'
 import AddMachine from '../add_machine/AddMachine'
+import ActionForMachine from '../action_machine/ActionForMachine'
+import {
+  MOVE_MACHINE_ACTION,
+  REMOVE_MACHINE_ACTION,
+  ROTATE_MACHINE_ACTION
+} from '../factory/factoryLib'
 
 export const ToolBox = () => {
   return (
@@ -26,36 +31,36 @@ export const ToolBox = () => {
       <div className="title">Máquinas</div>
       <div className="toolbox-board">
         <div className="row">
-          <AddMachine machineType={STARTER_MACHINE}>
-            <Cell>
-              <Starter direction={south()} onClick={() => {}} />
-            </Cell>
-          </AddMachine>
-          <AddMachine machineType={SELLER_MACHINE}>
-            <Cell>
-              <Seller direction={south()} />
-            </Cell>
-          </AddMachine>
+          <Cell>
+            <AddMachine machineType={STARTER_MACHINE}>
+              <Starter direction={south()} selectRawMaterial={() => {}} />
+            </AddMachine>
+          </Cell>
+          <Cell>
+            <AddMachine machineType={SELLER_MACHINE}>
+              <Seller direction={south()} onClick={() => {}} />
+            </AddMachine>
+          </Cell>
         </div>
 
         <div className="row">
-          <AddMachine machineType={FURNACE_MACHINE}>
-            <Cell>
-              <Furnace direction={south()} />
-            </Cell>
-          </AddMachine>
-          <AddMachine machineType={NONE_MACHINE}>
-            <Cell>
-              <Crafter id={4} key={4} />
-            </Cell>
-          </AddMachine>
+          <Cell>
+            <AddMachine machineType={FURNACE_MACHINE}>
+              <Furnace direction={south()} onClick={() => {}} />
+            </AddMachine>
+          </Cell>
+          <Cell>
+            <AddMachine machineType={CRAFTER_MACHINE}>
+              <Crafter direction={south()} onClick={() => {}} />
+            </AddMachine>
+          </Cell>
         </div>
         <div className="row">
-          <AddMachine machineType={TRANSPORTER_MACHINE}>
-            <Cell>
-              <Transporter direction={south()} />
-            </Cell>
-          </AddMachine>
+          <Cell>
+            <AddMachine machineType={TRANSPORTER_MACHINE}>
+              <Transporter direction={south()} onClick={() => {}} />
+            </AddMachine>
+          </Cell>
           <Cell />
         </div>
       </div>
@@ -64,15 +69,21 @@ export const ToolBox = () => {
       <div className="toolbox-board">
         <div className="row">
           <Cell>
-            <Remove id={1} key={1} />
+            <ActionForMachine actionType={REMOVE_MACHINE_ACTION}>
+              <Remove direction={south()} />
+            </ActionForMachine>
           </Cell>
           <Cell>
-            <Move id={2} key={2} />
+            <ActionForMachine actionType={MOVE_MACHINE_ACTION}>
+              <Move direction={south()} />
+            </ActionForMachine>
           </Cell>
         </div>
         <div className="row">
           <Cell>
-            <Rotate id={3} key={3} />
+            <ActionForMachine actionType={ROTATE_MACHINE_ACTION}>
+              <Rotate direction={south()} />
+            </ActionForMachine>
           </Cell>
           <Cell />
         </div>

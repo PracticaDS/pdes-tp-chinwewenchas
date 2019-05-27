@@ -63,6 +63,25 @@ export const addMachine = (position, machineType, factory) => {
   )
 }
 
+export const removeMachine = (position, factory) => {
+  return updatePositionWith(
+    position,
+    _ => newMachine(position, NONE_MACHINE),
+    factory
+  )
+}
+
+export const moveMachine = (position, factory) => {
+  const machine = machineAt(position, factory)
+  return {
+    ...removeMachine(position, factory),
+    actionSelected: {
+      machineType: machine.type,
+      actionType: ADD_MACHINE_ACTION
+    }
+  }
+}
+
 export const findAndRotateMachine = (position, factory) => {
   return updatePositionWith(
     position,
@@ -102,3 +121,6 @@ export function updatePositionWith (position, callback, factory) {
 }
 
 export const ADD_MACHINE_ACTION = 'ADD_MACHINE_ACTION'
+export const ROTATE_MACHINE_ACTION = 'ROTATE_MACHINE_ACTION'
+export const MOVE_MACHINE_ACTION = 'MOVE_MACHINE_ACTION'
+export const REMOVE_MACHINE_ACTION = 'REMOVE_MACHINE_ACTION'
