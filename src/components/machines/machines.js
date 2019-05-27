@@ -21,8 +21,7 @@ const starterMachine = position => {
     props: {
       position: position,
       active: false,
-      direction: south(),
-      onClick: () => {}
+      direction: south()
     }
   }
 }
@@ -33,8 +32,7 @@ const noneMachine = position => {
     type: NONE_MACHINE,
     props: {
       position: position,
-      materialCount: 0,
-      onClick: () => {}
+      materialCount: 0
     }
   }
 }
@@ -47,8 +45,7 @@ const transporterMachine = position => {
       position: position,
       active: false,
       direction: south(),
-      materials: [],
-      onClick: () => {}
+      materials: []
     }
   }
 }
@@ -61,8 +58,7 @@ const furnanceMachine = position => {
       position: position,
       active: false,
       direction: south(),
-      materials: [],
-      onClick: () => {}
+      materials: []
     }
   }
 }
@@ -75,8 +71,7 @@ const sellerMachine = position => {
       position: position,
       active: false,
       direction: south(),
-      materials: [],
-      onClick: () => {}
+      materials: []
     }
   }
 }
@@ -89,8 +84,7 @@ const crafterMachine = position => {
       position: position,
       active: false,
       direction: south(),
-      materials: [],
-      onClick: () => {}
+      materials: []
     }
   }
 }
@@ -217,10 +211,7 @@ export const rotateMachine = machine => {
     ...machine,
     props: {
       ...machine.props,
-
-      direction: machine.props.direction
-        ? turnClockwise(machine.props.direction)
-        : undefined
+      direction: turnClockwise(machine.props.direction)
     }
   }
 }

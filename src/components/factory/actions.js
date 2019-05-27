@@ -1,18 +1,17 @@
 import {
-  NONE_MACHINE,
+  CRAFTER_MACHINE,
   FURNACE_MACHINE,
   isOfType,
+  NONE_MACHINE,
   SELLER_MACHINE,
   STARTER_MACHINE,
-  TRANSPORTER_MACHINE,
-  CRAFTER_MACHINE
+  TRANSPORTER_MACHINE
 } from '../machines/machines'
-import { openRawMaterialSelector } from '../raw_material_selector/actions'
 import {
   ADD_MACHINE_ACTION,
-  ROTATE_MACHINE_ACTION,
   MOVE_MACHINE_ACTION,
-  REMOVE_MACHINE_ACTION
+  REMOVE_MACHINE_ACTION,
+  ROTATE_MACHINE_ACTION
 } from './factoryLib'
 
 export const MATERIAL_FOR_STARTER = 'MATERIAL_FOR_STARTER'
@@ -56,6 +55,7 @@ export const moveMachine = position => {
     position
   }
 }
+
 export const TICK = 'TICK'
 export const tick = () => {
   return (dispatch, getState) => {
@@ -105,10 +105,9 @@ const doTick = machines => {
   }
 }
 
-export const SELECT_MACHINE = 'SELECT_MACHINE'
 export const selectMachineForAddition = machineType => {
   return {
-    type: SELECT_MACHINE,
+    type: SELECT_ACTION,
     machineType: machineType,
     actionType: ADD_MACHINE_ACTION
   }
@@ -154,8 +153,6 @@ export const positionSelected = position => {
         default:
           break
       }
-    } else {
-      dispatch(openRawMaterialSelector(position))
     }
   }
 }

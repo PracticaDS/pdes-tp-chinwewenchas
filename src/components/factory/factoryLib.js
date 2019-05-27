@@ -72,14 +72,14 @@ export const removeMachine = (position, factory) => {
 }
 
 export const moveMachine = (position, factory) => {
-  let machine = machineAt(position, factory)
-  return updatePositionWith(position, _ => newMachine(position, NONE_MACHINE), {
-    ...factory,
+  const machine = machineAt(position, factory)
+  return {
+    ...removeMachine(position, factory),
     actionSelected: {
       machineType: machine.type,
       actionType: ADD_MACHINE_ACTION
     }
-  })
+  }
 }
 
 export const findAndRotateMachine = (position, factory) => {
@@ -111,7 +111,6 @@ export function machineAt (position, factory) {
 
 export function updatePositionWith (position, callback, factory) {
   let machine = machineAt(position, factory)
-  delete factory.actualMovingMachine
   return {
     ...factory,
     [row(position)]: {

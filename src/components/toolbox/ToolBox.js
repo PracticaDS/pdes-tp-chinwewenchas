@@ -11,19 +11,18 @@ import { Starter } from '../machines/starter/Starter'
 import { Cell } from '../cell/Cell'
 import { south } from '../machines/direction'
 import {
+  CRAFTER_MACHINE,
   FURNACE_MACHINE,
-  NONE_MACHINE,
   SELLER_MACHINE,
   STARTER_MACHINE,
-  TRANSPORTER_MACHINE,
-  CRAFTER_MACHINE
+  TRANSPORTER_MACHINE
 } from '../machines/machines'
 import AddMachine from '../add_machine/AddMachine'
 import ActionForMachine from '../action_machine/ActionForMachine'
 import {
-  ROTATE_MACHINE_ACTION,
   MOVE_MACHINE_ACTION,
-  REMOVE_MACHINE_ACTION
+  REMOVE_MACHINE_ACTION,
+  ROTATE_MACHINE_ACTION
 } from '../factory/factoryLib'
 
 export const ToolBox = () => {
@@ -32,62 +31,60 @@ export const ToolBox = () => {
       <div className="title">Máquinas</div>
       <div className="toolbox-board">
         <div className="row">
-          <AddMachine machineType={STARTER_MACHINE}>
-            <Cell>
-              <Starter direction={south()} onClick={() => {}} />
-            </Cell>
-          </AddMachine>
-          <AddMachine machineType={SELLER_MACHINE}>
-            <Cell>
+          <Cell>
+            <AddMachine machineType={STARTER_MACHINE}>
+              <Starter direction={south()} selectRawMaterial={() => {}} />
+            </AddMachine>
+          </Cell>
+          <Cell>
+            <AddMachine machineType={SELLER_MACHINE}>
               <Seller direction={south()} onClick={() => {}} />
-            </Cell>
-          </AddMachine>
+            </AddMachine>
+          </Cell>
         </div>
 
         <div className="row">
-          <AddMachine machineType={FURNACE_MACHINE}>
-            <Cell>
+          <Cell>
+            <AddMachine machineType={FURNACE_MACHINE}>
               <Furnace direction={south()} onClick={() => {}} />
-            </Cell>
-          </AddMachine>
-          <AddMachine machineType={CRAFTER_MACHINE}>
-            <Cell>
+            </AddMachine>
+          </Cell>
+          <Cell>
+            <AddMachine machineType={CRAFTER_MACHINE}>
               <Crafter direction={south()} onClick={() => {}} />
-            </Cell>
-          </AddMachine>
+            </AddMachine>
+          </Cell>
         </div>
         <div className="row">
-          <AddMachine machineType={TRANSPORTER_MACHINE}>
-            <Cell>
+          <Cell>
+            <AddMachine machineType={TRANSPORTER_MACHINE}>
               <Transporter direction={south()} onClick={() => {}} />
-            </Cell>
-          </AddMachine>
-          <AddMachine machineType={NONE_MACHINE}>
-            <Cell />
-          </AddMachine>
+            </AddMachine>
+          </Cell>
+          <Cell />
         </div>
       </div>
 
       <div className="title">Edición</div>
       <div className="toolbox-board">
         <div className="row">
-          <ActionForMachine actionType={REMOVE_MACHINE_ACTION}>
-            <Cell>
+          <Cell>
+            <ActionForMachine actionType={REMOVE_MACHINE_ACTION}>
               <Remove direction={south()} />
-            </Cell>
-          </ActionForMachine>
-          <ActionForMachine actionType={MOVE_MACHINE_ACTION}>
-            <Cell>
+            </ActionForMachine>
+          </Cell>
+          <Cell>
+            <ActionForMachine actionType={MOVE_MACHINE_ACTION}>
               <Move direction={south()} />
-            </Cell>
-          </ActionForMachine>
+            </ActionForMachine>
+          </Cell>
         </div>
         <div className="row">
-          <ActionForMachine actionType={ROTATE_MACHINE_ACTION}>
-            <Cell>
+          <Cell>
+            <ActionForMachine actionType={ROTATE_MACHINE_ACTION}>
               <Rotate direction={south()} />
-            </Cell>
-          </ActionForMachine>
+            </ActionForMachine>
+          </Cell>
           <Cell />
         </div>
       </div>

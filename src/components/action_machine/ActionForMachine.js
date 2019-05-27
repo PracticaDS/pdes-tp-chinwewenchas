@@ -14,9 +14,7 @@ export const ActionForMachine = ({
   return (
     <div
       onClick={() => selectAction(actionType)}
-      className={`action_machine ${
-        selected ? 'action_machine_machine_active' : ''
-      }`}
+      className={`action_machine ${selected ? 'action_machine_active' : ''}`}
     >
       {children}
     </div>

@@ -6,22 +6,50 @@ import { south } from '../direction'
 describe('starter', () => {
   let defaultProps = {
     active: false,
-    onClick: () => {},
+    selectRawMaterial: () => {},
+    selectPosition: () => {},
+    actionSelected: undefined,
     position: { x: 1, y: 1 },
     direction: south()
   }
 
-  it('do click when click on it', () => {
-    let executed = false
-    let myProps = {
-      ...defaultProps,
-      onClick: () => {
-        executed = true
-      }
-    }
-    const starter = shallow(<Starter {...myProps} />)
+  describe('when click on it', () => {
+    let executedRawMaterial
+    let executedSelectPosition
+    let myProps
 
-    starter.find('div.starter').simulate('click')
-    expect(executed).toBe(true)
+    beforeEach(() => {
+      executedRawMaterial = false
+      executedSelectPosition = false
+      myProps = {
+        ...defaultProps,
+        selectRawMaterial: () => {
+          executedRawMaterial = true
+        },
+        selectPosition: () => {
+          executedSelectPosition = true
+        }
+      }
+    })
+    describe('when the actionSelected is not defined', () => {
+      it('only executes the selectRawMaterial', function () {
+        myProps.actionSelected = undefined
+        const starter = shallow(<Starter {...myProps} />)
+
+        starter.find('div.starter').simulate('click')
+        expect(executedRawMaterial).toBe(true)
+        expect(executedSelectPosition).toBe(false)
+      })
+    })
+    describe('when the actionSelected is defined', () => {
+      it('only executes the selectPosition', function () {
+        myProps.actionSelected = 'lala'
+        const starter = shallow(<Starter {...myProps} />)
+
+        starter.find('div.starter').simulate('click')
+        expect(executedRawMaterial).toBe(false)
+        expect(executedSelectPosition).toBe(true)
+      })
+    })
   })
 })
