@@ -2,11 +2,14 @@ import { east, north, position, positionAt, south, west } from './direction'
 import {
   FURNACE_MACHINE,
   isNoneMachine,
+  MATERIAL_ADDITION,
+  MATERIAL_DELETION,
   newMachine,
   NONE_MACHINE,
   pointTo,
   rotateMachine,
   SELLER_MACHINE,
+  SELLS,
   STARTER_MACHINE,
   tickMachine,
   TRANSPORTER_MACHINE,
@@ -15,11 +18,10 @@ import {
 import {
   addMachine,
   emptyFactory,
-  machineAt,
   materialTo,
   updatePositionWith
 } from '../factory/factoryLib'
-import { GOLD, isSolid, materialProfit, newMaterial, SILVER } from './materials'
+import { GOLD, newMaterial, SILVER } from './materials'
 
 describe('machines', function () {
   let machinePosition = position(1, 1)
@@ -301,14 +303,14 @@ describe('machines', function () {
       )
     }
 
-    function itReturnsTheFactoryUnmodified (machinePosition, newFactory) {
-      expect(tickMachine(newFactory, machinePosition)).toEqual(newFactory)
+    function itReturnEmptyMutationList (machinePosition, newFactory) {
+      expect(tickMachine(newFactory, machinePosition)).toEqual([])
     }
 
     function andTheMachineDirectionIs (direction, factory) {
       describe(`and the machine direction is ${direction.direction}`, () => {
         it('because there are no machineCreator there', () => {
-          itReturnsTheFactoryUnmodified(
+          itReturnEmptyMutationList(
             machinePosition,
             machineDirectionTo(machinePosition, direction, factory)
           )
@@ -321,7 +323,7 @@ describe('machines', function () {
 
       describe('and cant deliver material', () => {
         it('because the starter dont have a material selected', () => {
-          itReturnsTheFactoryUnmodified(machinePosition, newFactory)
+          itReturnEmptyMutationList(machinePosition, newFactory)
         })
         andTheMachineDirectionIs(south(), newFactory)
         andTheMachineDirectionIs(north(), newFactory)
@@ -350,13 +352,13 @@ describe('machines', function () {
                 NONE_MACHINE,
                 successTickFactory
               )
-              it('deliver material there', () => {
-                expect(
-                  machineAt(
-                    newMachinePosition,
-                    tickMachine(successTickFactory, machinePosition)
-                  ).props.materialCount
-                ).toEqual(1)
+              it('returns the intetion to deliver the material there', () => {
+                const action = tickMachine(
+                  successTickFactory,
+                  machinePosition
+                )[0]
+                expect(action.type).toBe(MATERIAL_ADDITION)
+                expect(action.position).toEqual(newMachinePosition)
               })
             })
           })
@@ -376,7 +378,9 @@ describe('machines', function () {
         )
       })
       it('when the transporter is empty', function () {
-        itReturnsTheFactoryUnmodified(machinePosition, newFactory)
+        const action = tickMachine(newFactory, machinePosition)[0]
+        expect(action.type).toBe(MATERIAL_DELETION)
+        expect(action.position).toEqual(machinePosition)
       })
       it('when the transporter has materials to deliver', () => {
         const otherMachinePosition = positionAt(transporterPosition, south())
@@ -394,17 +398,11 @@ describe('machines', function () {
           newFactory,
           fromPosition
         )
-        newFactory = tickMachine(newFactory, transporterPosition)
-
-        expect(
-          machineAt(transporterPosition, newFactory).props.materials.length
-        ).toBe(0)
-        expect(machineAt(transporterPosition, newFactory).props.active).toBe(
-          false
-        )
-        expect(
-          machineAt(otherMachinePosition, newFactory).props.materialCount
-        ).toBe(2)
+        const actions = tickMachine(newFactory, transporterPosition)
+        expect(actions[0].type).toBe(MATERIAL_ADDITION)
+        expect(actions[0].position).toEqual(otherMachinePosition)
+        expect(actions[1].type).toBe(MATERIAL_DELETION)
+        expect(actions[1].position).toEqual(transporterPosition)
       })
     })
     describe('when tick on a furnace machine', () => {
@@ -416,7 +414,9 @@ describe('machines', function () {
         newFactory = addMachine(furnacePosition, FURNACE_MACHINE, factory)
       })
       it('when the furnace is empty', function () {
-        itReturnsTheFactoryUnmodified(machinePosition, newFactory)
+        const actions = tickMachine(newFactory, machinePosition)
+        expect(actions[0].type).toBe(MATERIAL_DELETION)
+        expect(actions[0].position).toEqual(machinePosition)
       })
       it('when the furnace has materials to melt', () => {
         const otherMachinePosition = positionAt(furnacePosition, south())
@@ -434,15 +434,11 @@ describe('machines', function () {
           newFactory,
           fromPosition
         )
-        newFactory = tickMachine(newFactory, furnacePosition)
-        const expectedFurnace = machineAt(furnacePosition, newFactory)
-        const expectedTransporter = machineAt(otherMachinePosition, newFactory)
-
-        expect(expectedFurnace.props.materials.length).toBe(0)
-        expect(expectedFurnace.props.active).toBe(false)
-        expect(expectedTransporter.props.materials.length).toBe(2)
-        expect(isSolid(expectedTransporter.props.materials[0])).toBe(false)
-        expect(isSolid(expectedTransporter.props.materials[1])).toBe(false)
+        const actions = tickMachine(newFactory, furnacePosition)
+        expect(actions[0].type).toBe(MATERIAL_ADDITION)
+        expect(actions[0].position).toEqual(otherMachinePosition)
+        expect(actions[1].type).toBe(MATERIAL_DELETION)
+        expect(actions[1].position).toEqual(furnacePosition)
       })
     })
     describe('when tick on a seller machine', () => {
@@ -454,7 +450,9 @@ describe('machines', function () {
         newFactory = addMachine(sellerPosition, SELLER_MACHINE, factory)
       })
       it('when the seller is empty', function () {
-        itReturnsTheFactoryUnmodified(machinePosition, newFactory)
+        const actions = tickMachine(newFactory, machinePosition)
+        expect(actions[0].type).toBe(MATERIAL_DELETION)
+        expect(actions[0].position).toEqual(machinePosition)
       })
       it('when the seller has materials to sell', () => {
         const fromPosition = positionAt(sellerPosition, north())
@@ -467,19 +465,15 @@ describe('machines', function () {
           newFactory,
           fromPosition
         )
-        newFactory = tickMachine(newFactory, sellerPosition)
-
-        const expectedSeller = machineAt(sellerPosition, newFactory)
-        const expectedSells = materialProfit(gold) + materialProfit(silver)
-
-        expect(expectedSeller.props.materials.length).toBe(0)
-        expect(expectedSeller.props.active).toBe(false)
-        expect(newFactory.totalSells).toBe(expectedSells)
+        const actions = tickMachine(newFactory, sellerPosition)
+        expect(actions[0].type).toBe(MATERIAL_DELETION)
+        expect(actions[0].position).toEqual(sellerPosition)
+        expect(actions[1].type).toBe(SELLS)
       })
     })
     it('when tick on any other machineCreator', () => {
       let newFactory = addMachine(machinePosition, NONE_MACHINE, factory)
-      itReturnsTheFactoryUnmodified(machinePosition, newFactory)
+      itReturnEmptyMutationList(machinePosition, newFactory)
     })
   })
 })

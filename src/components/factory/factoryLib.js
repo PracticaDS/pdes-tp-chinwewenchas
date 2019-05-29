@@ -1,15 +1,14 @@
 import {
-  mergeMachines,
+  MATERIAL_ADDITION,
+  MATERIAL_DELETION,
   newMachine,
   NONE_MACHINE,
   rotateMachine,
+  SELLS,
   tickMachine,
   withMaterial
 } from '../machines/machines'
 import { column, position, row } from '../machines/direction'
-import { Cell } from '../cell/Cell'
-import { MachineCreator } from '../machines/machineCreator/MachineCreator'
-import React from 'react'
 
 export function emptyFactory () {
   return { rows: 0, columns: 0, totalSells: 0 }
@@ -53,22 +52,44 @@ export const addToSells = (sells, factory) => {
 }
 
 export const tick = (machinesPositions, factory) => {
-  machinesPositions
-    .map((position) => tickMachine(factory, position))
-    .reduce((newFactory, toMergeFactory) => mergeFactories(newFactory, toMergeFactory), { ...factory })
-}
+  const machineMutations = machinesPositions
+    .map(position => tickMachine(factory, position))
+    .flat(2)
 
-const mergeFactories = (leftFactory, rightFactory) => {
-  const { rows, columns, totalSells, actionSelected, ...board } = leftFactory
-  let mergedFactory = leftFactory
-  Object.keys(board)
-    .forEach(row => {
-      Object.keys(board[row]).forEach(col => {
-        mergedFactory[row][col] = mergeMachines(leftFactory[row][col], rightFactory[row][col])
-      })
-    })
-  mergedFactory.totalSells = mergedFactory.totalSells + Math.abs(leftFactory.totalSells - rightFactory.totalSells)
-  return mergedFactory
+  let newFactory = factory
+
+  newFactory = machineMutations
+    .filter(mutation => mutation.type === SELLS)
+    .reduce(
+      (mutatedFactory, mutation) => mutation.action(mutatedFactory),
+      newFactory
+    )
+
+  newFactory = machineMutations
+    .filter(mutation => mutation.type === MATERIAL_DELETION)
+    .reduce(
+      (mutatedFactory, mutation) =>
+        updatePositionWith(
+          mutation.position,
+          _ => mutation.action(),
+          mutatedFactory
+        ),
+      newFactory
+    )
+
+  newFactory = machineMutations
+    .filter(mutation => mutation.type === MATERIAL_ADDITION)
+    .reduce(
+      (mutatedFactory, mutation) =>
+        updatePositionWith(
+          mutation.position,
+          _ => mutation.action(mutatedFactory),
+          mutatedFactory
+        ),
+      newFactory
+    )
+
+  return newFactory
 }
 
 export const addMachine = (position, machineType, factory) => {

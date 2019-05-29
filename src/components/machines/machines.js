@@ -6,7 +6,7 @@ import {
   south,
   turnClockwise
 } from './direction'
-import { addToSells, machineAt, materialTo, updatePositionWith } from '../factory/factoryLib'
+import { addToSells, machineAt } from '../factory/factoryLib'
 import { materialProfit, meltMaterials } from './materials'
 
 export const STARTER_MACHINE = 'STARTER_MACHINE'
@@ -105,7 +105,7 @@ export const newMachine = (position, machineType) => {
 }
 
 export const tickMachine = (factory, position) => {
-  const machine = factory[position.y][position.x]
+  const machine = machineAt(position, factory)
   switch (machine.type) {
     case STARTER_MACHINE:
       return tickToStarter(factory, machine)
@@ -118,82 +118,102 @@ export const tickMachine = (factory, position) => {
     case CRAFTER_MACHINE:
       return tickToCrafter(factory, machine)
     default:
-      return factory
+      return []
   }
 }
 
-const withMaterialsTick = (factory, machine, materials) => {
+const withMaterialsTick = (factory, machine, materials, actions) => {
   let positionToDeliverMaterials = positionAt(
     machine.props.position,
     machine.props.direction
   )
   if (canSendMaterials(factory, materials, positionToDeliverMaterials)) {
-    return materialTo(
-      positionToDeliverMaterials,
-      materials,
-      factory,
-      machine.props.position
-    )
+    return [
+      ...actions,
+      {
+        type: MATERIAL_ADDITION,
+        action: theFactory =>
+          withMaterial(
+            machineAt(positionToDeliverMaterials, theFactory),
+            materials,
+            machine.props.position
+          ),
+        position: positionToDeliverMaterials
+      }
+    ]
   }
-  return factory
+  return actions
 }
 
+const sell = (sells, actions) => {
+  return [
+    ...actions,
+    {
+      type: SELLS,
+      action: factory => addToSells(sells, factory)
+    }
+  ]
+}
 const tickToSeller = (factory, machine) => {
   const sells = machine.props.materials
     .map(material => materialProfit(material))
     .reduce((totalSells, materialProfit) => totalSells + materialProfit, 0)
-  return updatePositionWith(
-    machine.props.position,
-    machine => clearMaterials(machine),
-    addToSells(sells, factory)
-  )
+  let actions = []
+  actions = clearMaterials(machine, actions)
+  actions = sell(sells, actions)
+  return actions
 }
+
 const tickToFurnace = (factory, machine) => {
   const materials = meltMaterials(machine.props.materials)
-  const newfactory = withMaterialsTick(factory, machine, materials)
-  return updatePositionWith(
-    machine.props.position,
-    machine => clearMaterials(machine),
-    newfactory
-  )
+  let actions = []
+  actions = withMaterialsTick(factory, machine, materials, actions)
+  actions = clearMaterials(machine, actions)
+  return actions
 }
 
 const tickToTransporter = (factory, machine) => {
   const materials = machine.props.materials
-  const newfactory = withMaterialsTick(factory, machine, materials)
-  return updatePositionWith(
-    machine.props.position,
-    transporter => clearMaterials(transporter),
-    newfactory
-  )
+  let actions = []
+  actions = withMaterialsTick(factory, machine, materials, actions)
+  actions = clearMaterials(machine, actions)
+  return actions
 }
 
 const tickToCrafter = (factory, machine) => {
+  // TODO terminar de implementar el crafter
   const materials = machine.props.materials
-  const newfactory = withMaterialsTick(factory, machine, materials)
-  return updatePositionWith(
-    machine.props.position,
-    machine => clearMaterials(machine),
-    newfactory
-  )
+  let actions = []
+  actions = withMaterialsTick(factory, machine, materials, actions)
+  actions = clearMaterials(machine, actions)
+  return actions
 }
 
-const clearMaterials = transporter => {
-  return {
-    ...transporter,
+const clearMaterials = (machine, actions) => {
+  const newMachine = {
+    ...machine,
     props: {
-      ...transporter.props,
+      ...machine.props,
       materials: [],
       active: false
     }
   }
+  return [
+    ...actions,
+    {
+      type: MATERIAL_DELETION,
+      action: () => newMachine,
+      position: machine.props.position
+    }
+  ]
 }
 
 const tickToStarter = (factory, machine) => {
   return withMaterialsTick(
     factory,
     machine,
-    machine.props.material ? [machine.props.material] : []
+    machine.props.material ? [machine.props.material] : [],
+    []
   )
 }
 
@@ -345,39 +365,6 @@ export const isOfType = (machine, type) => {
   return machine.type === type
 }
 
-export const mergeNoneMachine = (leftNoneMachine, rightNoneMachine) => {
-  const { materialCount: leftMaterialCount } = leftNoneMachine.props
-  const { materialCount: rightMaterialCount } = rightNoneMachine.props
-  return {
-    ...leftNoneMachine,
-    props: {
-      ...leftNoneMachine.props,
-      materialCount: leftMaterialCount + Math.abs(leftMaterialCount - rightMaterialCount)
-    }
-  }
-}
-
-const mergeMaterials = (leftMachine, rightMachine) => {
-  const { materials: leftMaterials } = leftMachine.props
-  const { materials: rightMaterials } = rightMachine.props
-  const newMaterials = [...leftMaterials.filter((element) => !rightMaterials.includes(element)), ...rightMaterials]
-  console.log(newMaterials)
-  return {
-    ...leftMachine,
-    props: {
-      ...leftMachine.props,
-      materials: newMaterials
-    }
-  }
-}
-
-export const mergeMachines = (leftMachine, rightMachine) => {
-  switch (leftMachine.type) {
-    case NONE_MACHINE:
-      return mergeNoneMachine(leftMachine, rightMachine)
-    case STARTER_MACHINE:
-      return leftMachine
-    default:
-      return mergeMaterials(leftMachine, rightMachine)
-  }
-}
+export const MATERIAL_ADDITION = 'MATERIAL_ADDITION'
+export const MATERIAL_DELETION = 'MATERIAL_DELETION'
+export const SELLS = 'SELLS'

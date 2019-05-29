@@ -3,6 +3,7 @@ import {
   MATERIAL_FOR_STARTER,
   MOVE_MACHINE,
   REMOVE_MACHINE,
+  RESET_FACTORY,
   ROTATE,
   SELECT_ACTION,
   SET_TICK_TIMER,
@@ -24,6 +25,8 @@ const initialState = createFactoryBoard(5)
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case RESET_FACTORY:
+      return createFactoryBoard(state.rows)
     case MATERIAL_FOR_STARTER:
       return updatePositionWith(
         action.position,

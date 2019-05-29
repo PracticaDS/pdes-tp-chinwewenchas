@@ -1,7 +1,14 @@
 import React from 'react'
 import App from '../App'
 import { mount } from 'enzyme'
-import { deleteOn, machineAbsent, machinePresent, onFactoryPosition, onMachine, withMachine } from "./helpper";
+import {
+  deleteOn,
+  machineAbsent,
+  machinePresent,
+  onFactoryPosition,
+  onMachine,
+  withMachine
+} from './helpper'
 
 describe('App', () => {
   let app

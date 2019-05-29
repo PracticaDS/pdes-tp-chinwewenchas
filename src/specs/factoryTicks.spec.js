@@ -2,16 +2,28 @@ import React from 'react'
 import App from '../App'
 import { mount } from 'enzyme'
 import { storeInstance } from '../store'
-import { materialProfit, meltMaterials, newMaterial, SILVER } from '../components/machines/materials'
+import {
+  materialProfit,
+  meltMaterials,
+  newMaterial,
+  SILVER
+} from '../components/machines/materials'
 import { machineAt } from '../components/factory/factoryLib'
 import { position } from '../components/machines/direction'
-import { onFactoryPosition, onMachine, rotateOn, tickFactory, withMachine } from './helpper'
-import { materialForStarter } from '../components/factory/actions'
+import {
+  onFactoryPosition,
+  onMachine,
+  rotateOn,
+  tickFactory,
+  withMachine
+} from './helpper'
+import { materialForStarter, resetFactory } from '../components/factory/actions'
 
 describe('App', () => {
   let app
   beforeEach(() => {
     app = mount(<App />)
+    storeInstance.dispatch(resetFactory())
   })
   afterEach(() => {
     app.unmount()
@@ -23,7 +35,9 @@ describe('App', () => {
     describe('with some machines in it', () => {
       beforeEach(() => {
         withMachine('.starter', '03', app)
-        storeInstance.dispatch(materialForStarter(position(0, 3), newMaterial(SILVER)))
+        storeInstance.dispatch(
+          materialForStarter(position(0, 3), newMaterial(SILVER))
+        )
         withMachine('.furnace', '13', app)
         withMachine('.transporter', '23', app)
         rotateOn('23', '.transporter', app)
@@ -34,14 +48,16 @@ describe('App', () => {
       })
       const hasImageActive = machine => {
         expect(
-          machine.find('img').html().includes('_active.svg')
+          machine
+            .find('img')
+            .html()
+            .includes('_active.svg')
         ).toBe(true)
       }
       test('after one tick ', () => {
         tickFactory()
         expect(
-          machineAt(position(1, 3), state().factory).props
-            .materials[0]
+          machineAt(position(1, 3), state().factory).props.materials[0]
         ).toEqual(newMaterial(SILVER))
         onFactoryPosition(app, '03', position => {
           onMachine('.starter', hasImageActive, position)
@@ -50,11 +66,10 @@ describe('App', () => {
       test('after two ticks ', () => {
         tickFactory()
         tickFactory()
-        let state1 = storeInstance.getState();
+        let state1 = storeInstance.getState()
         expect(
-          machineAt(position(2, 3), state1.factory).props
-            .materials[0]
-        ).toEqual(newMaterial(SILVER))
+          machineAt(position(2, 3), state1.factory).props.materials[0]
+        ).toEqual(meltMaterials([newMaterial(SILVER)])[0])
         onFactoryPosition(app, '13', position => {
           onMachine('.furnace', hasImageActive, position)
         })
@@ -94,7 +109,7 @@ describe('App', () => {
           materialProfit(meltMaterials([newMaterial(SILVER)])[0])
         )
         onFactoryPosition(app, '12', position => {
-          onMachine('.transporter', hasImageActive, position)
+          onMachine('.seller', hasImageActive, position)
         })
       })
     })

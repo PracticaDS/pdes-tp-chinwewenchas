@@ -1,7 +1,7 @@
 import React from 'react'
 import App from '../App'
 import { mount } from 'enzyme'
-import { onFactoryPosition, onMachine, rotateOn, withMachine } from "./helpper";
+import { onFactoryPosition, onMachine, rotateOn, withMachine } from './helpper'
 
 describe('App', () => {
   let app
