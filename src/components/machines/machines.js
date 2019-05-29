@@ -6,12 +6,7 @@ import {
   south,
   turnClockwise
 } from './direction'
-import {
-  addToSells,
-  machineAt,
-  materialTo,
-  updatePositionWith
-} from '../factory/factoryLib'
+import { addToSells, machineAt, materialTo, updatePositionWith } from '../factory/factoryLib'
 import { materialProfit, meltMaterials } from './materials'
 
 export const STARTER_MACHINE = 'STARTER_MACHINE'
@@ -348,4 +343,41 @@ export const activate = machine => {
 
 export const isOfType = (machine, type) => {
   return machine.type === type
+}
+
+export const mergeNoneMachine = (leftNoneMachine, rightNoneMachine) => {
+  const { materialCount: leftMaterialCount } = leftNoneMachine.props
+  const { materialCount: rightMaterialCount } = rightNoneMachine.props
+  return {
+    ...leftNoneMachine,
+    props: {
+      ...leftNoneMachine.props,
+      materialCount: leftMaterialCount + Math.abs(leftMaterialCount - rightMaterialCount)
+    }
+  }
+}
+
+const mergeMaterials = (leftMachine, rightMachine) => {
+  const { materials: leftMaterials } = leftMachine.props
+  const { materials: rightMaterials } = rightMachine.props
+  const newMaterials = [...leftMaterials.filter((element) => !rightMaterials.includes(element)), ...rightMaterials]
+  console.log(newMaterials)
+  return {
+    ...leftMachine,
+    props: {
+      ...leftMachine.props,
+      materials: newMaterials
+    }
+  }
+}
+
+export const mergeMachines = (leftMachine, rightMachine) => {
+  switch (leftMachine.type) {
+    case NONE_MACHINE:
+      return mergeNoneMachine(leftMachine, rightMachine)
+    case STARTER_MACHINE:
+      return leftMachine
+    default:
+      return mergeMaterials(leftMachine, rightMachine)
+  }
 }

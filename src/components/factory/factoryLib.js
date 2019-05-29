@@ -1,4 +1,5 @@
 import {
+  mergeMachines,
   newMachine,
   NONE_MACHINE,
   rotateMachine,
@@ -6,6 +7,9 @@ import {
   withMaterial
 } from '../machines/machines'
 import { column, position, row } from '../machines/direction'
+import { Cell } from '../cell/Cell'
+import { MachineCreator } from '../machines/machineCreator/MachineCreator'
+import React from 'react'
 
 export function emptyFactory () {
   return { rows: 0, columns: 0, totalSells: 0 }
@@ -48,11 +52,23 @@ export const addToSells = (sells, factory) => {
   }
 }
 
-export const tick = (machinesPositions, state) => {
-  return machinesPositions.reduce(
-    (newState, position) => tickMachine(newState, position),
-    state
-  )
+export const tick = (machinesPositions, factory) => {
+  machinesPositions
+    .map((position) => tickMachine(factory, position))
+    .reduce((newFactory, toMergeFactory) => mergeFactories(newFactory, toMergeFactory), { ...factory })
+}
+
+const mergeFactories = (leftFactory, rightFactory) => {
+  const { rows, columns, totalSells, actionSelected, ...board } = leftFactory
+  let mergedFactory = leftFactory
+  Object.keys(board)
+    .forEach(row => {
+      Object.keys(board[row]).forEach(col => {
+        mergedFactory[row][col] = mergeMachines(leftFactory[row][col], rightFactory[row][col])
+      })
+    })
+  mergedFactory.totalSells = mergedFactory.totalSells + Math.abs(leftFactory.totalSells - rightFactory.totalSells)
+  return mergedFactory
 }
 
 export const addMachine = (position, machineType, factory) => {
