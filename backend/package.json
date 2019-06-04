@@ -1,0 +1,22 @@
+{
+  "name": "pdes-tp-chinwenwenchas-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/PracticaDS/pdes-tp-chinwewenchas.git"
+  },
+  "author": "",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/PracticaDS/pdes-tp-chinwewenchas/issues"
+  },
+  "homepage": "https://github.com/PracticaDS/pdes-tp-chinwewenchas#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
