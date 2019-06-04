@@ -23,6 +23,12 @@ export const materialForStarter = (position, material) => {
   }
 }
 
+export const RESET_FACTORY = 'RESET_FACTORY'
+export const resetFactory = () => {
+  return {
+    type: RESET_FACTORY
+  }
+}
 export const ADD_MACHINE = 'ADD_MACHINE'
 export const addMachine = (position, machineType) => {
   return {
@@ -56,14 +62,16 @@ export const moveMachine = position => {
   }
 }
 
+export const makeTick = () => {
+  return (dispatch, getState) => {
+    dispatch(doTick(findMachinesToTick(getState().factory)))
+  }
+}
 export const TICK = 'TICK'
 export const tick = () => {
   return (dispatch, getState) => {
     if (!getState().factory.timer) {
-      let timer = setInterval(
-        () => dispatch(doTick(findMachinesToTick(getState().factory))),
-        5000
-      )
+      let timer = setInterval(() => dispatch(makeTick()), 5000)
       dispatch(tickTimer(timer))
     }
   }

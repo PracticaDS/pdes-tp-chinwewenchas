@@ -8,14 +8,17 @@ import {
 import React from 'react'
 import { mount } from 'enzyme'
 import { TestProvider } from '../../tests_helpers/TestProvider'
-import { south } from '../direction'
+import { south, position } from '../direction'
 
 describe('machineCreator component', () => {
   describe('when machineCreator type is starter', () => {
     it('render the starter machineCreator', function () {
       let machineToRender = {
         type: STARTER_MACHINE,
-        props: { direction: south() }
+        props: {
+          direction: south(),
+          position: position(1, 1)
+        }
       }
       let machine = mount(
         <TestProvider>
@@ -29,7 +32,10 @@ describe('machineCreator component', () => {
     it('render the transporter machine', function () {
       let machineToRender = {
         type: TRANSPORTER_MACHINE,
-        props: { direction: south() }
+        props: {
+          direction: south(),
+          position: position(1, 1)
+        }
       }
       let machine = mount(
         <TestProvider>
@@ -43,7 +49,10 @@ describe('machineCreator component', () => {
     it('render the furnace machine', function () {
       let machineToRender = {
         type: FURNACE_MACHINE,
-        props: { direction: south() }
+        props: {
+          direction: south(),
+          position: position(1, 1)
+        }
       }
       let machine = mount(
         <TestProvider>
@@ -57,7 +66,10 @@ describe('machineCreator component', () => {
     it('render the seller machine', function () {
       let machineToRender = {
         type: SELLER_MACHINE,
-        props: { direction: south() }
+        props: {
+          direction: south(),
+          position: position(1, 1)
+        }
       }
       let machine = mount(
         <TestProvider>
@@ -69,7 +81,12 @@ describe('machineCreator component', () => {
   })
   describe('when machineCreator type any other', () => {
     it('render the none machineCreator', function () {
-      let machineToRender = { type: 'lalala', props: {} }
+      let machineToRender = {
+        type: 'lalala',
+        props: {
+          position: position(1, 1)
+        }
+      }
       let machine = mount(
         <TestProvider>
           <MachineCreator machine={machineToRender} />

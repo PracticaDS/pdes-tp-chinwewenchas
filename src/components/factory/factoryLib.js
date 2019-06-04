@@ -1,7 +1,10 @@
 import {
+  MATERIAL_ADDITION,
+  MATERIAL_DELETION,
   newMachine,
   NONE_MACHINE,
   rotateMachine,
+  SELLS,
   tickMachine,
   withMaterial
 } from '../machines/machines'
@@ -48,11 +51,45 @@ export const addToSells = (sells, factory) => {
   }
 }
 
-export const tick = (machinesPositions, state) => {
-  return machinesPositions.reduce(
-    (newState, position) => tickMachine(newState, position),
-    state
-  )
+export const tick = (machinesPositions, factory) => {
+  const machineMutations = machinesPositions
+    .map(position => tickMachine(factory, position))
+    .flat(2)
+
+  let newFactory = factory
+
+  newFactory = machineMutations
+    .filter(mutation => mutation.type === SELLS)
+    .reduce(
+      (mutatedFactory, mutation) => mutation.action(mutatedFactory),
+      newFactory
+    )
+
+  newFactory = machineMutations
+    .filter(mutation => mutation.type === MATERIAL_DELETION)
+    .reduce(
+      (mutatedFactory, mutation) =>
+        updatePositionWith(
+          mutation.position,
+          _ => mutation.action(),
+          mutatedFactory
+        ),
+      newFactory
+    )
+
+  newFactory = machineMutations
+    .filter(mutation => mutation.type === MATERIAL_ADDITION)
+    .reduce(
+      (mutatedFactory, mutation) =>
+        updatePositionWith(
+          mutation.position,
+          _ => mutation.action(mutatedFactory),
+          mutatedFactory
+        ),
+      newFactory
+    )
+
+  return newFactory
 }
 
 export const addMachine = (position, machineType, factory) => {
