@@ -7,6 +7,7 @@ cache:
   directories:
     - node_modules
 script:
+  - cd frontend
   - yarn install
   - yarn lint
   - "CI=true yarn test"
@@ -16,7 +17,7 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $github_token
-  local_dir: build
+  local_dir: frontend/build
   on:
     branch: master
 
