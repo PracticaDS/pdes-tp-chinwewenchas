@@ -1,8 +1,7 @@
-import '@babel/polyfill';
+import '@babel/polyfill'
 import request from 'supertest'
-import app from '../app'
-import {server} from '../app'
-import { HELLO_MESSAGE } from "./routes";
+import app, { server } from '../app'
+import { HELLO_MESSAGE } from './routes'
 
 describe('API', () => {
   afterAll(async () => {

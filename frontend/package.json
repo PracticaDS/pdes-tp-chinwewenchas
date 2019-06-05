@@ -1,5 +1,5 @@
 {
-  "name": "pdes-tp-chinwewenchas",
+  "name": "pdes-tp-chinwewenchas-frontend",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://practicads.github.io/pdes-tp-chinwewenchas/",
@@ -58,10 +58,5 @@
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^2.1.0",
     "prettier": "1.17.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn prettier && yarn lint:fix && git add . && CI=true yarn test"
-    }
   }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "pdes-tp-chinwewenchas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "precommit-frontend": "cd frontend && yarn prettier && yarn lint:fix",
+    "precommit-backend": "cd backend && yarn prettier && yarn lint:fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PracticaDS/pdes-tp-chinwewenchas.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PracticaDS/pdes-tp-chinwewenchas/issues"
+  },
+  "homepage": "https://github.com/PracticaDS/pdes-tp-chinwewenchas#readme",
+  "devDependencies": {
+    "husky": "^2.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn precommit-frontend && yarn precommit-backend && git add ."
+    }
+  }
+}

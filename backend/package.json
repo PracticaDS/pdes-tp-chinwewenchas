@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node -- index",
-    "lint": "eslint ./**/*.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "prettier": "prettier --write --no-semi --single-quote \"src/**/*.js\"",
     "test": "jest --watch testEnvironment=node",
     "testCI": "jest"
   },
@@ -32,11 +34,17 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.6",
     "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
+    "prettier": "^1.17.1",
     "supertest": "^4.0.2"
   }
 }
