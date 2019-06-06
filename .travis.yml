@@ -7,11 +7,16 @@ cache:
   directories:
     - node_modules
 script:
+  - cd backend
+  - yarn install
+  - yarn testCI
+  - yarn lint
+  - cd ..
   - cd frontend
   - yarn install
   - yarn lint
   - "CI=true yarn test"
-  - "yarn build"
+  - yarn build
 
 deploy:
   provider: pages
