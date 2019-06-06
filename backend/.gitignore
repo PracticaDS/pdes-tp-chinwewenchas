@@ -11,3 +11,4 @@ yarn-error.log*
 
 #No queremos usar npm asi que lo ignoramos por si alguien lo usa por error
 .package-lock.json
+.env

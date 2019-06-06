@@ -1,16 +1,23 @@
 import express from 'express'
 import morgan from 'morgan'
 import router from './routes/routes'
+import { connectDb } from './databaseConnection'
+
+require('dotenv').config()
 
 const app = express()
-const isProduction = process.env.NODE_ENV === 'production'
-const port = isProduction ? process.env.PORT : 3001
-
 app.use(morgan('dev'))
 app.use('/', router)
 
-export const server = app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server running on port ${port}`)
+const conection = connectDb(process.env.MONGO_URL).then(() => {
+  const port = process.env.PORT
+  return app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server running on port ${port}`)
+  })
 })
+export const server = {
+  close: () => conection.then(server => server.close())
+}
+
 export default app
