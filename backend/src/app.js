@@ -2,15 +2,18 @@ import express from 'express'
 import morgan from 'morgan'
 import router from './routes/routes'
 import { connectDb } from './databaseConnection'
-
-require('dotenv').config()
+import bodyParser from 'body-parser'
+import getEnv from '../enviroment'
 
 const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'))
 app.use('/', router)
 
-const conection = connectDb(process.env.MONGO_URL).then(() => {
-  const port = process.env.PORT
+const environment = getEnv(process.env.ENVIRONMENT)
+const conection = connectDb(environment.mongoUrl).then(() => {
+  const port = environment.port
   return app.listen(port, () => {
     // eslint-disable-next-line no-console
     console.log(`Server running on port ${port}`)

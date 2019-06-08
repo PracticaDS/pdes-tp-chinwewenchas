@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node -- index",
+    "start": "ENVIRONMENT='development' nodemon --exec babel-node -- index",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
     "prettier": "prettier --write --no-semi --single-quote \"src/**/*.js\"",
-    "test": "jest --watch testEnvironment=node",
-    "testCI": "jest --runInBand --ci --detectOpenHandles --forceExit"
+    "test": "ENVIRONMENT='test' jest --watch testEnvironment=node",
+    "testCI": "ENVIRONMENT='test' jest --runInBand --ci --detectOpenHandles --forceExit"
   },
   "repository": {
     "type": "git",
