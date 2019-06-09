@@ -63,7 +63,7 @@ describe('API', () => {
         .post('/api/sign_in')
         .send({ user: agus })
       const response = await request(app)
-        .post('/sign_in')
+        .post('/api/sign_in')
         .send({ user: agus })
       const users = await User.find({})
 
