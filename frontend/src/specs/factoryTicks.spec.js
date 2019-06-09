@@ -18,11 +18,15 @@ import {
   withMachine
 } from './helpper'
 import { materialForStarter, resetFactory } from '../components/factory/actions'
+import { enteredUserChange, signInAction } from '../components/sign_in/actions'
 
 describe('App', () => {
   let app
   beforeEach(() => {
     app = mount(<App />)
+    storeInstance.dispatch(enteredUserChange('yo'))
+    storeInstance.dispatch(signInAction())
+    app = app.update()
     storeInstance.dispatch(resetFactory())
   })
   afterEach(() => {

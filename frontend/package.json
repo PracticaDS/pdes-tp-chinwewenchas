@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://practicads.github.io/pdes-tp-chinwewenchas/",
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@types/lodash": "^4.14.123",
     "core-js": "^3.1.3",

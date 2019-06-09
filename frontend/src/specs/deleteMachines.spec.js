@@ -9,11 +9,16 @@ import {
   onMachine,
   withMachine
 } from './helpper'
+import { storeInstance } from '../store'
+import { enteredUserChange, signInAction } from '../components/sign_in/actions'
 
 describe('App', () => {
   let app
   beforeEach(() => {
     app = mount(<App />)
+    storeInstance.dispatch(enteredUserChange('yo'))
+    storeInstance.dispatch(signInAction())
+    app = app.update()
   })
   afterEach(() => {
     app.unmount()
