@@ -1,16 +1,26 @@
 import express from 'express'
 import morgan from 'morgan'
 import router from './routes/routes'
+import { connectDb } from './databaseConnection'
+import bodyParser from 'body-parser'
+import getEnv from '../enviroment'
 
 const app = express()
-const isProduction = process.env.NODE_ENV === 'production'
-const port = isProduction ? process.env.PORT : 3001
-
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'))
 app.use('/', router)
 
-export const server = app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server running on port ${port}`)
+const environment = getEnv(process.env.ENVIRONMENT)
+const conection = connectDb(environment.mongoUrl).then(() => {
+  const port = environment.port
+  return app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server running on port ${port}`)
+  })
 })
+export const server = {
+  close: () => conection.then(server => server.close())
+}
+
 export default app
