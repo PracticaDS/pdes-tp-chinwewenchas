@@ -9,7 +9,7 @@ export const enteredUserChange = newEnteredUser => {
 export const SIGN_IN = 'SIGN_IN'
 export const signIn = () => {
   return (dispatch, getState) => {
-    fetch('http://localhost:3000/sign_in', {
+    fetch('http://localhost:3000/api/sign_in', {
       method: 'POST',
       body: JSON.stringify({ user: getState().signIn.enteredUser }),
       headers: {

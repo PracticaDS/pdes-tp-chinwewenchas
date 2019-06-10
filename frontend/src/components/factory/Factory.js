@@ -9,7 +9,15 @@ import RawMaterialPopup from '../raw_material_popup/RawMaterialPopup'
 
 export const Factory = ({ factory, tick }) => {
   tick()
-  const { rows, columns, totalSells, actionSelected, ...board } = factory
+  const {
+    name,
+    id,
+    rows,
+    columns,
+    totalSells,
+    actionSelected,
+    ...board
+  } = factory
   return (
     <Fragment>
       <div className="factory">

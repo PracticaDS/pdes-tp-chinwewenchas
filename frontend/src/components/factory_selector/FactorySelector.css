@@ -1,0 +1,34 @@
+.factory_selector_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: lightgreen;
+}
+
+.factory_selector_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-basis: 50%;
+}
+
+.factory_selector_form_input {
+    margin: 5px;
+    box-sizing:border-box;
+    width: 100%
+}
+
+.factory_selector_form_button {
+    margin: 5px;
+    width: 100%;
+    box-sizing:border-box
+}

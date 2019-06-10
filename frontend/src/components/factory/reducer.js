@@ -1,5 +1,6 @@
 import {
   ADD_MACHINE,
+  FACTORY_SELECTED,
   MATERIAL_FOR_STARTER,
   MOVE_MACHINE,
   REMOVE_MACHINE,
@@ -26,7 +27,11 @@ const initialState = createFactoryBoard(5)
 export default (state = initialState, action) => {
   switch (action.type) {
     case RESET_FACTORY:
-      return createFactoryBoard(state.rows)
+      return {
+        name: state.name,
+        id: state.id,
+        ...createFactoryBoard(state.rows)
+      }
     case MATERIAL_FOR_STARTER:
       return updatePositionWith(
         action.position,
@@ -52,6 +57,13 @@ export default (state = initialState, action) => {
           machineType: action.machineType,
           actionType: action.actionType
         }
+      }
+    case FACTORY_SELECTED:
+      return {
+        ...action.factory.board,
+        name: action.factory.name,
+        id: action.factory._id,
+        actionSelected: {}
       }
     default:
       return state

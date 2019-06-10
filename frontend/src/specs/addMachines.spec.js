@@ -4,6 +4,8 @@ import { mount } from 'enzyme'
 import { click, onFactoryPosition, onMachine, onToolbox } from './helpper'
 import { storeInstance } from '../store'
 import { enteredUserChange, signInAction } from '../components/sign_in/actions'
+import { createFactoryBoard } from '../components/factory/factoryLib'
+import { factorySelected } from '../components/factory/actions'
 
 describe('App', () => {
   let app
@@ -11,6 +13,9 @@ describe('App', () => {
     app = mount(<App />)
     storeInstance.dispatch(enteredUserChange('yo'))
     storeInstance.dispatch(signInAction())
+    storeInstance.dispatch(
+      factorySelected({ name: 'lala', id: 10, board: createFactoryBoard(10) })
+    )
     app = app.update()
   })
 

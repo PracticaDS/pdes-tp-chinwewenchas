@@ -4,6 +4,7 @@ import app, { server } from '../app'
 import { HELLO_MESSAGE } from './routes'
 import Hello from '../models/hello'
 import User from '../models/User'
+import Factory from '../models/Factory'
 
 describe('API', () => {
   afterAll(async () => {
@@ -70,6 +71,76 @@ describe('API', () => {
       expect(response.statusCode).toBe(200)
       expect(users.length).toBe(1)
       expect(users[0].name).toBe(agus)
+    })
+  })
+  describe('/new_factory path', () => {
+    const agus = 'agus'
+    beforeEach(async () => {
+      await request(app)
+        .post('/api/sign_in')
+        .send({ user: agus })
+    })
+    it('creates a factory if not exists', async () => {
+      const name = 'nueva fabrica'
+      const size = 10
+      const response = await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: name,
+          size: size,
+          board: {},
+          user: agus
+        })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.name).toBe(name)
+      expect(response.body.size).toBe(size)
+    })
+    it('returns the existent factory if exists', async () => {
+      const name = 'nueva fabrica'
+      const size = 10
+      await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: name,
+          size: size,
+          board: {},
+          user: agus
+        })
+
+      await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: name,
+          size: size,
+          board: {},
+          user: agus
+        })
+
+      const user = await User.findOne({ name: agus })
+      const factories = await Factory.find({ _user: user._id })
+
+      expect(factories.length).toBe(1)
+      expect(factories[0].name).toBe(name)
+      expect(factories[0].size).toBe(size)
+    })
+    it('creates the factory for the user', async () => {
+      const name = 'nueva fabrica'
+      const size = 10
+      await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: name,
+          size: size,
+          board: {},
+          user: agus
+        })
+
+      const user = await User.findOne({ name: agus }).populate('factories')
+
+      expect(user.factories.length).toBe(1)
+      expect(user.factories[0].name).toBe(name)
+      expect(user.factories[0].size).toBe(size)
     })
   })
 })
