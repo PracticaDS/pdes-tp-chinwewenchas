@@ -59,11 +59,13 @@ export default (state = initialState, action) => {
         }
       }
     case FACTORY_SELECTED:
+      clearTimeout(state.timer)
       return {
         ...action.factory.board,
         name: action.factory.name,
         id: action.factory._id,
-        actionSelected: {}
+        actionSelected: {},
+        timer: undefined
       }
     default:
       return state

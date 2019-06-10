@@ -53,6 +53,14 @@ router.post('/api/new_factory', async (req, res) => {
   }
 })
 
+router.post('/api/save', async (req, res) => {
+  const factory = await Factory.findById(req.body.id)
+  factory.board = req.body.board
+  factory.save()
+
+  res.send(200)
+})
+
 router.get('/quit', (req, res) => {
   res.send(200)
   server.close()

@@ -16,6 +16,7 @@ export const Factory = ({ factory, tick }) => {
     columns,
     totalSells,
     actionSelected,
+    timer,
     ...board
   } = factory
   return (

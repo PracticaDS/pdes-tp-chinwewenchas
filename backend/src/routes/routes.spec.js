@@ -6,13 +6,19 @@ import Hello from '../models/hello'
 import User from '../models/User'
 import Factory from '../models/Factory'
 
+const resetDB = async () => {
+  return Promise.all([Hello.remove({}), User.remove({}), Factory.remove({})])
+}
+
 describe('API', () => {
+  beforeAll(async () => {
+    await resetDB()
+  })
   afterAll(async () => {
     await server.close()
   })
   afterEach(async () => {
-    await Hello.remove({})
-    await User.remove({})
+    await resetDB()
   })
   it('requesting / gives a hello', async () => {
     const response = await request(app).get('/')
@@ -141,6 +147,43 @@ describe('API', () => {
       expect(user.factories.length).toBe(1)
       expect(user.factories[0].name).toBe(name)
       expect(user.factories[0].size).toBe(size)
+    })
+  })
+  describe('/save path', () => {
+    const agus = 'agus'
+    let factory
+
+    beforeEach(async () => {
+      await request(app)
+        .post('/api/sign_in')
+        .send({ user: agus })
+
+      await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: 'pepe',
+          size: 10,
+          board: {},
+          user: agus
+        })
+
+      factory = await Factory.findOne({ name: 'pepe' })
+    })
+
+    it('saves the new board factory', async () => {
+      const newBoard = { holis: 'munro' }
+      const response = await request(app)
+        .post('/api/save')
+        .send({
+          id: factory.id,
+          board: newBoard
+        })
+
+      const newFactory = await Factory.findById(factory.id)
+
+      expect(response.statusCode).toBe(200)
+      expect(factory.board).not.toEqual(newBoard)
+      expect(newFactory.board).toEqual(newBoard)
     })
   })
 })
