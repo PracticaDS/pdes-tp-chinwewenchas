@@ -186,4 +186,63 @@ describe('API', () => {
       expect(newFactory.board).toEqual(newBoard)
     })
   })
+  describe('/factories', () => {
+    let agus
+    let pepe
+    let agusFactory1
+    let agusFactory2
+
+    beforeEach(async () => {
+      agus = await User.create({ name: 'agus' })
+      pepe = await User.create({ name: 'pepe' })
+      await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: 'agus factory 1',
+          size: 10,
+          board: {},
+          user: agus.name
+        })
+
+      await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: 'agus factory 2',
+          size: 20,
+          board: {},
+          user: agus.name
+        })
+
+      await request(app)
+        .post('/api/new_factory')
+        .send({
+          name: 'pepe factory',
+          size: 20,
+          board: {},
+          user: pepe.name
+        })
+
+      agusFactory1 = await Factory.findOne({
+        _user: agus._id,
+        name: 'agus factory 1'
+      })
+      agusFactory2 = await Factory.findOne({
+        _user: agus._id,
+        name: 'agus factory 2'
+      })
+    })
+
+    it('returns all the user factories', async () => {
+      const response = await request(app)
+        .get('/api/factories')
+        .query({ user: agus.name })
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body.length).toBe(2)
+      expect(response.body.map(f => f._id)).toEqual([
+        agusFactory1._id.toString(),
+        agusFactory2._id.toString()
+      ])
+    })
+  })
 })

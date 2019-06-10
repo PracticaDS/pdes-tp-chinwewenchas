@@ -61,6 +61,12 @@ router.post('/api/save', async (req, res) => {
   res.send(200)
 })
 
+router.get('/api/factories', async (req, res) => {
+  const user = await User.findOne({ name: req.query.user })
+  const factories = await Factory.find({ _user: user._id })
+  res.send(factories)
+})
+
 router.get('/quit', (req, res) => {
   res.send(200)
   server.close()

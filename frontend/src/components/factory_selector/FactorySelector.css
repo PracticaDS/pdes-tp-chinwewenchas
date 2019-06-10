@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     align-content: center;
@@ -13,6 +13,7 @@
 }
 
 .factory_selector_form {
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;

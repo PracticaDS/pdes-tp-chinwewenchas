@@ -7,6 +7,7 @@ const SignIn = ({ userChange, signIn, user }) => {
   return (
     <div className="sign_in_container">
       <div className="sign_in_form">
+        <h1>Sign In! </h1>
         <input
           className="sign_in_form_input"
           type="text"

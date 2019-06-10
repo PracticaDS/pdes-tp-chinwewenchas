@@ -1,0 +1,22 @@
+.factory_selector_item {
+    border-width: thick;
+    border-color: black;
+    border-style: solid;
+    margin: 10px;
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    background-color: lightsalmon;
+}
+
+.factory_selector_item_name {
+    flex-grow: 20;
+    text-transform: uppercase;
+    align-self: center;
+}
+
+.factory_selector_item_button {
+    flex-grow: 1;
+}

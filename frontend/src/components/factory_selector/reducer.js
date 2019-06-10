@@ -1,12 +1,14 @@
 import {
   FACTORY_NAME_CHANGED,
   FACTORY_SIZE_CHANGE,
-  CREATE_FACTORY
+  CREATE_FACTORY,
+  SET_FACTORIES
 } from './actions'
 
 const initialState = {
   newFactoryName: undefined,
-  newFactorySize: 0
+  newFactorySize: 0,
+  factories: []
 }
 
 export default (state = initialState, action) => {
@@ -17,6 +19,8 @@ export default (state = initialState, action) => {
       return { ...state, newFactorySize: action.factorySize }
     case CREATE_FACTORY:
       return initialState
+    case SET_FACTORIES:
+      return { ...state, factories: action.factories }
     default:
       return state
   }

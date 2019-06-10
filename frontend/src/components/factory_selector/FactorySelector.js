@@ -4,9 +4,11 @@ import { connect } from 'react-redux'
 import {
   newFactoryChangeName,
   newFactorySizeChange,
-  createFactory
+  createFactory,
+  selectFactory
 } from './actions'
 import './FactorySelector.css'
+import { FactoryItem } from './FactoryItem'
 
 const FactorySelector = ({
   userName,
@@ -14,7 +16,9 @@ const FactorySelector = ({
   newFactorySize,
   newFactoryChangeName,
   newFactorySizeChange,
-  createFactory
+  createFactory,
+  factories,
+  selectFactory
 }) => {
   return (
     <div className="factory_selector_container">
@@ -41,6 +45,15 @@ const FactorySelector = ({
         >
           Create Factory
         </button>
+        {factories.map((f, i) => {
+          return (
+            <FactoryItem
+              key={i}
+              name={f.name}
+              onClick={() => selectFactory(f._id)}
+            />
+          )
+        })}
       </div>
     </div>
   )
@@ -52,14 +65,17 @@ FactorySelector.propTypes = {
   newFactorySize: PropTypes.number,
   newFactoryChangeName: PropTypes.func,
   newFactorySizeChange: PropTypes.func,
-  createFactory: PropTypes.func
+  createFactory: PropTypes.func,
+  factories: PropTypes.array,
+  selectFactory: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
     userName: state.signIn.user,
     newFactoryName: state.factorySelector.newFactoryName,
-    newFactorySize: state.factorySelector.newFactorySize
+    newFactorySize: state.factorySelector.newFactorySize,
+    factories: state.factorySelector.factories
   }
 }
 
@@ -67,7 +83,8 @@ const mapDispatchToProps = dispatch => {
   return {
     newFactoryChangeName: e => dispatch(newFactoryChangeName(e.target.value)),
     newFactorySizeChange: e => dispatch(newFactorySizeChange(e.target.value)),
-    createFactory: () => dispatch(createFactory())
+    createFactory: () => dispatch(createFactory()),
+    selectFactory: id => dispatch(selectFactory(id))
   }
 }
 
