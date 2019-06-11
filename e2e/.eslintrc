@@ -1,8 +1,8 @@
 {
   "parser": "babel-eslint",
   "env": {
-    "node": true
+    "cypress/globals": true
   },
-  "plugins": ["jest", "import", "promise"],
+  "plugins": ["jest", "import", "promise", "cypress"],
   "extends": ["eslint:recommended", "plugin:jest/recommended", "standard"]
 }
