@@ -38,7 +38,7 @@ app.use((err, req, res, next) => {
 app.use((req, res, next) => {
   const responseTimeInMs = Date.now() - res.locals.startEpoch
   httpRequestDurationMs
-    .labels(req.method, req.url, res.statusCode)
+    .labels(req.method, req.path, res.statusCode)
     .observe(responseTimeInMs)
   next()
 })
