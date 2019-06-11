@@ -17,6 +17,21 @@ export const newFactorySizeChange = newFactorySize => {
   }
 }
 
+export const selectFactory = id => {
+  return (dispatch, getState) => {
+    const factory = getState().factorySelector.factories.find(f => f._id === id)
+    dispatch(factorySelected(factory))
+  }
+}
+
+export const SET_FACTORIES = 'SET_FACTORIES'
+export const setFactories = factories => {
+  return {
+    type: SET_FACTORIES,
+    factories: factories
+  }
+}
+
 export const CREATE_FACTORY = 'CREATE_FACTORY'
 export const createFactory = () => {
   return (dispatch, getState) => {
