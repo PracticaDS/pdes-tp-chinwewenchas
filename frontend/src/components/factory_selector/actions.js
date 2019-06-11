@@ -51,7 +51,7 @@ export const createFactory = () => {
         return response.json()
       })
       .then(body => {
-        dispatch(factorySelected(body[0]))
+        dispatch(factorySelected(body))
       })
   }
 }
