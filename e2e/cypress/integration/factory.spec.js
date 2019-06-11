@@ -1,3 +1,9 @@
+function signIn () {
+  // Sign in
+  cy.get('input').type('Chinwewencha')
+  cy.get('.sign_in_form_button').click()
+}
+
 describe('Factory', () => {
   describe('Una vez cargada la pagina', () => {
     beforeEach('Cargar la pagina', () => {
@@ -8,115 +14,116 @@ describe('Factory', () => {
       // Sign in
       cy.get('.sign_in_container')
       cy.get('.sign_in_form')
-      cy.get('.sign_in_form_input')
-        .then(function ($input) {
-          $input[0].setAttribute('value', 'Chinwewencha')
-        })
+      cy.get('input')
+        .type('Chinwewencha')
         .should('have.attr', 'value', 'Chinwewencha')
-
       cy.get('.sign_in_form_button')
-        .invoke('width')
-        .should('be.greaterThan', 0)
-      cy.get('.sign_in_form_button')
-        .wait(1000)
         .should('be.visible')
-        .click({ force: true })
+        .click()
     })
 
     describe('Al completar el usuario y tocar Sign in', () => {
+      beforeEach(() => {
+        signIn()
+      })
       it('debe mostrar los elementos de saludo al usuario logueado y elementos de creación de fábrico', () => {
-        // Sign in
-        cy.get('.sign_in_container')
-        cy.get('.sign_in_form')
-        cy.get('.sign_in_form_input')
-          .then(function ($input) {
-            $input[0].setAttribute('value', 'Chinwewencha')
-          })
-          .should('have.attr', 'value', 'Chinwewencha')
-
-        cy.get('.sign_in_form_button')
-          .invoke('width')
-          .should('be.greaterThan', 0)
-        cy.get('.sign_in_form_button')
-          .wait(1000)
-          .should('be.visible')
-          .click({ force: true })
-        /*
-      cy.get('.factory_selector_container')
-      cy.get('.factory_selector_form')
-        .find('h1')
-        .contains('Whale cum Chinwewencha! ')
-      cy.get('.factory_selector_form_input')
-*/
+        cy.get('.factory_selector_container').wait(100)
+        cy.get('.factory_selector_form')
+          .find('h1')
+          .contains('Whale cum Chinwewencha! ')
+        cy.get('.factory_selector_form_input')
       })
     })
     describe('Al completar los datos de creación de fábrica y tocar Create Factory', () => {
+      beforeEach(() => {
+        signIn()
+      })
+
       it('debe mostrar los elementos de la factory, toolbox, ganancias', () => {
-        // Sign in
-        cy.get('.sign_in_container')
-        cy.get('.sign_in_form')
-        cy.get('.sign_in_form_input')
-          .then(function ($input) {
-            $input[0].setAttribute('value', 'Chinwewencha')
-          })
-          .should('have.attr', 'value', 'Chinwewencha')
+        cy.get('.factory_selector_form')
+          .find('h1')
+          .contains('Whale cum Chinwewencha! ')
+        cy.get('.factory_selector_form_input')
+          .first()
+          .type('Fábrica')
+          .should('have.attr', 'value', 'Fábrica')
 
-        cy.get('.sign_in_form_button')
-          .invoke('width')
-          .should('be.greaterThan', 0)
-        cy.get('.sign_in_form_button')
-          .wait(1000)
-          .should('be.visible')
-          .click({ force: true })
-        /*
-      cy.get('.factory_selector_container')
-      cy.get('.factory_selector_form')
-        .find('h1')
-        .contains('Whale cum Chinwewencha! ')
-      cy.get('.factory_selector_form_input')
-        .then(function ($input) {
-          $input[0].setAttribute('value', 'Fábrica chota')
-        })
-        .should('have.attr', 'value', 'Fábrica chota')
+        cy.get('.factory_selector_form_input')
+          .last()
+          .clear()
+          .type(3)
+          .wait(100)
+          .should('have.value', '3')
 
-      cy.get('.factory_selector_form_input')
-        .then(function ($input) {
-          $input[1].setAttribute('value', 3)
-        })
-        .should('have.attr', 'value', 3)
+        cy.get('.factory_selector_form_button')
+          .click()
+          .wait(100)
 
-      cy.get(".factory_selector_form_button").click({force: true})
-*/
         // Ganancias
-        // cy.get(".incomes-container")
-        // cy.get(".incomes")
-
+        cy.get('.incomes')
+          .wait(100)
+          .should('be.visible')
         // Toolbox
-
-        // cy.get(".toolbox-container")
-
-        // Maquinas
-        // cy.get(".title")
-        // cy.get(".toolbox-board")
-        // cy.get(".starter")
-        // cy.get(".seller")
-        // cy.get(".furnase")
-        // cy.get(".crafter")
-        // cy.get(".transporter")
-
-        // Acciones
-        // cy.get(".title")
-        // cy.get(".toolbox-board")
-        // cy.get(".remove")
-        // cy.get(".move")
-        // cy.get(".rotate")
-
+        cy.get('.toolbox-container').should('be.visible')
+        cy.get('.toolbox-board')
+          .first()
+          .should('be.visible')
+        cy.get('.toolbox-board')
+          .last()
+          .should('be.visible')
         // Factory
-        // cy.get(".factory")
-        // cy.get(".factory_item")
-        // cy.get(".factory_item")
-        // cy.get(".factory_item")
-        // cy.get(".factory_item")
+        cy.get('.factory').should('be.visible')
+      })
+    })
+    describe('Con un usuario con fabricas creadas', () => {
+      const createFactory = name => {
+        cy.get('.factory_selector_container').wait(100)
+        cy.get('.factory_selector_form_input')
+          .first()
+          .type(name)
+        cy.get('.factory_selector_form_input')
+          .last()
+          .clear()
+          .type('3')
+          .wait(100)
+        cy.get('.factory_selector_form_button')
+          .click()
+          .wait(100)
+      }
+      beforeEach(() => {
+        signIn()
+        createFactory('uno')
+        cy.visit('http://localhost:3000')
+
+        signIn()
+        createFactory('dos')
+        cy.visit('http://localhost:3000')
+
+        signIn()
+        createFactory('tres')
+        cy.visit('http://localhost:3000')
+      })
+      it('al hacer click en una vemos la fabrica', () => {
+        signIn()
+        cy.get('.factory_selector_item_button')
+          .first()
+          .should('be.visible')
+          .click()
+
+        // Ganancias
+        cy.get('.incomes')
+          .wait(100)
+          .should('be.visible')
+        // Toolbox
+        cy.get('.toolbox-container').should('be.visible')
+        cy.get('.toolbox-board')
+          .first()
+          .should('be.visible')
+        cy.get('.toolbox-board')
+          .last()
+          .should('be.visible')
+        // Factory
+        cy.get('.factory').should('be.visible')
       })
     })
   })
