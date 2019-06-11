@@ -7,7 +7,10 @@ import getEnv from '../enviroment'
 
 const app = express()
 const promBundle = require('express-prom-bundle')
-const metricsMiddleware = promBundle({ includeMethod: true, includeStatusCode: true})
+const metricsMiddleware = promBundle({
+  includeMethod: true,
+  includeStatusCode: true
+})
 
 app.use(bodyParser.json())
 app.use(metricsMiddleware)
