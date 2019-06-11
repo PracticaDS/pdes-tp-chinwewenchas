@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import request from 'supertest'
-import app, { server } from '../app'
+import app from '../app'
 import { HELLO_MESSAGE } from './routes'
 import Hello from '../models/hello'
 import User from '../models/User'
@@ -13,9 +13,6 @@ const resetDB = async () => {
 describe('API', () => {
   beforeAll(async () => {
     await resetDB()
-  })
-  afterAll(async () => {
-    await server.close()
   })
   afterEach(async () => {
     await resetDB()
