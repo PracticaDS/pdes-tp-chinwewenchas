@@ -8,7 +8,7 @@ import {
   newMaterial,
   SILVER
 } from '../components/machines/materials'
-import { machineAt } from '../components/factory/factoryLib'
+import { createFactoryBoard, machineAt } from '../components/factory/factoryLib'
 import { position } from '../components/machines/direction'
 import {
   onFactoryPosition,
@@ -17,7 +17,11 @@ import {
   tickFactory,
   withMachine
 } from './helpper'
-import { materialForStarter, resetFactory } from '../components/factory/actions'
+import {
+  factorySelected,
+  materialForStarter,
+  resetFactory
+} from '../components/factory/actions'
 import { enteredUserChange, signInAction } from '../components/sign_in/actions'
 
 describe('App', () => {
@@ -26,6 +30,9 @@ describe('App', () => {
     app = mount(<App />)
     storeInstance.dispatch(enteredUserChange('yo'))
     storeInstance.dispatch(signInAction())
+    storeInstance.dispatch(
+      factorySelected({ name: 'lala', id: 10, board: createFactoryBoard(10) })
+    )
     app = app.update()
     storeInstance.dispatch(resetFactory())
   })

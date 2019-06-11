@@ -62,6 +62,14 @@ export const moveMachine = position => {
   }
 }
 
+export const FACTORY_SELECTED = 'FACTORY_SELECTED'
+export const factorySelected = factory => {
+  return {
+    type: FACTORY_SELECTED,
+    factory: factory
+  }
+}
+
 export const makeTick = () => {
   return (dispatch, getState) => {
     dispatch(doTick(findMachinesToTick(getState().factory)))
@@ -86,7 +94,15 @@ export const tickTimer = timer => {
 }
 
 const findMachines = (factory, machineType) => {
-  const { rows, columns, totalSells, actionSelected, ...board } = factory
+  const {
+    name,
+    id,
+    rows,
+    columns,
+    totalSells,
+    actionSelected,
+    ...board
+  } = factory
   return Object.keys(board)
     .map(row => {
       return Object.keys(board[row])
