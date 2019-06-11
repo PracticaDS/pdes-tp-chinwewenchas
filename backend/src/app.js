@@ -6,7 +6,11 @@ import bodyParser from 'body-parser'
 import getEnv from '../enviroment'
 
 const app = express()
+const promBundle = require('express-prom-bundle')
+const metricsMiddleware = promBundle({ includeMethod: true, includeStatusCode: true})
+
 app.use(bodyParser.json())
+app.use(metricsMiddleware)
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'))
 app.use('/', router)
