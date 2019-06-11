@@ -70,6 +70,27 @@ export const factorySelected = factory => {
   }
 }
 
+const autosave = () => {
+  return (dispatch, getSetate) => {
+    const { name, id, ...board } = getSetate().factory
+
+    fetch('http://localhost:3000/api/save', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: name,
+        id: id,
+        board: board
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).catch(error => {
+      // eslint-disable-next-line no-console
+      console.log(error)
+    })
+  }
+}
+
 export const makeTick = () => {
   return (dispatch, getState) => {
     dispatch(doTick(findMachinesToTick(getState().factory)))
@@ -79,7 +100,10 @@ export const TICK = 'TICK'
 export const tick = () => {
   return (dispatch, getState) => {
     if (!getState().factory.timer) {
-      let timer = setInterval(() => dispatch(makeTick()), 5000)
+      let timer = setInterval(() => {
+        dispatch(makeTick())
+        dispatch(autosave())
+      }, 5000)
       dispatch(tickTimer(timer))
     }
   }
