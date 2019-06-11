@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "precommit-frontend": "cd frontend && yarn prettier && yarn lint:fix",
-    "precommit-backend": "cd backend && yarn prettier && yarn lint:fix"
+    "precommit-backend": "cd backend && yarn prettier && yarn lint:fix",
+    "precommit-e2e": "cd e2e && yarn prettier && yarn lint:fix"
+
   },
   "repository": {
     "type": "git",
@@ -18,11 +20,12 @@
   },
   "homepage": "https://github.com/PracticaDS/pdes-tp-chinwewenchas#readme",
   "devDependencies": {
-    "husky": "^2.1.0"
+    "husky": "^2.1.0",
+    "cypress": "^3.3.1"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn precommit-frontend && yarn precommit-backend && git add ."
+      "pre-commit": "yarn precommit-frontend && yarn precommit-backend && yarn precommit-e2e && git add ."
     }
   }
 }

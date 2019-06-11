@@ -1,0 +1,31 @@
+{
+  "name": "pdes-tp-chinwenwenchas-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cypress open",
+    "lint": "eslint cypress",
+    "lint:fix": "eslint --fix cypress",
+    "prettier": "prettier --write --no-semi --single-quote \"cypress/**/*.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/PracticaDS/pdes-tp-chinwewenchas.git"
+  },
+  "author": "",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/PracticaDS/pdes-tp-chinwewenchas/issues"
+  },
+  "homepage": "https://github.com/PracticaDS/pdes-tp-chinwewenchas",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.3",
+    "prettier": "^1.17.1",
+    "supertest": "^4.0.2",
+    "cypress": "^3.3.1"
+  }
+}
