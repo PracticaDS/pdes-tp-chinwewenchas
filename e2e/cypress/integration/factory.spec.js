@@ -91,6 +91,7 @@ describe('Factory', () => {
           .wait(100)
       }
       beforeEach(() => {
+        cy.request('DELETE', '/api/factories')
         signIn()
         createFactory('uno')
         cy.visit('http://localhost:3000')
@@ -124,6 +125,109 @@ describe('Factory', () => {
           .should('be.visible')
         // Factory
         cy.get('.factory').should('be.visible')
+      })
+      describe('y una vacía seleccionada', () => {
+        beforeEach(() => {
+          signIn()
+          cy.get('.factory_selector_item_button')
+            .first()
+            .should('be.visible')
+            .click()
+        })
+        it('al hacer click en un starter y luego en el tablero (0,0) debe verse un starter en en ese cuadrado del tablero', () => {
+          cy.get('.factory_item div.starter').should('not.exist')
+          cy.get('.starter')
+            .wait(100)
+            .should('be.visible')
+            .click()
+
+          cy.get('.none_machine')
+            .first()
+            .click()
+
+          cy.get('.factory_item div.starter').should('be.visible')
+        })
+      })
+      describe('y una vacía seleccionada y un starter en (0,0)', () => {
+        beforeEach(() => {
+          signIn()
+          cy.get('.factory_selector_item_button')
+            .first()
+            .should('be.visible')
+            .click()
+
+          cy.get('.factory_item div.starter').should('not.exist')
+          cy.get('.starter')
+            .wait(100)
+            .should('be.visible')
+            .click()
+
+          cy.get('.none_machine')
+            .first()
+            .click()
+
+          cy.get('.factory_item div.starter').should('be.visible')
+        })
+        it('al hacer click en un seller y luego en el tablero (0,1) debe verse un starter y un seller en el tablero', () => {
+          cy.get('.factory_item div.seller').should('not.exist')
+          cy.get('.seller')
+            .wait(100)
+            .should('be.visible')
+            .click()
+          cy.get('.none_machine')
+            .eq(2)
+            .click()
+          cy.get('.factory_item div.seller').should('be.visible')
+        })
+        describe('y un seller en (0,1)', () => {
+          it('al hacer click en en el starter, seleccionar el primer elemento de la lista y esperar un tick, las ganancias crecen', () => {
+            cy.get('.seller')
+              .wait(100)
+              .should('be.visible')
+              .click()
+            cy.get('.none_machine')
+              .eq(2)
+              .click()
+
+            cy.get('.factory_item div.starter img').should(
+              'have.attr',
+              'src',
+              'icons/starter.svg'
+            )
+            cy.get('.factory_item div.seller img').should(
+              'have.attr',
+              'src',
+              'icons/seller.svg'
+            )
+            cy.get('.incomes')
+              .wait(100)
+              .should('have.text', '$0')
+
+            cy.get('.factory_item div.starter')
+              .should('be.visible')
+              .click()
+              .wait(100)
+            cy.get('.raw-material-selector-item')
+              .first()
+              .should('be.visible')
+              .click()
+
+            cy.get('.factory_item div.starter img')
+              .wait(100)
+              .should('have.attr', 'src', 'icons/starter_active.svg')
+              .wait(1000)
+
+            cy.get('.factory_item div.seller img').should(
+              'have.attr',
+              'src',
+              'icons/seller_active.svg'
+            )
+
+            cy.get('.incomes')
+              .wait(5000)
+              .should('have.text', '$50')
+          })
+        })
       })
     })
   })
