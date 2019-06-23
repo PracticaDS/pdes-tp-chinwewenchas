@@ -101,6 +101,16 @@ router.get('/api/factories', async (req, res, next) => {
   }
 })
 
+router.delete('/api/factories', async (req, res, next) => {
+  try {
+    await Factory.deleteMany({})
+    res.send({})
+    next()
+  } catch (e) {
+    next(e)
+  }
+})
+
 router.get('/bad', (req, res, next) => {
   next(new Error('My Error'))
 })
