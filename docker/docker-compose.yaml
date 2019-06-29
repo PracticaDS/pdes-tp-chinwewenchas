@@ -6,7 +6,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./db:/data/db
+      - ../db:/data/db
   mongo-express:
     image: mongo-express
     restart: always
@@ -15,9 +15,9 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./prometheus-data:/prometheus-data
+      - ../prometheus-data:/prometheus-data
     command:
-      - '--config.file=/prometheus-data/prometheus.yml'
+      - '--config.file=../prometheus-data/prometheus.yml'
     ports:
       - 9090:9090
     restart: always
