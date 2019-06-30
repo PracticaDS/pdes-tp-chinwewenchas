@@ -6,7 +6,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ../db:/data/db
+      - ./db:/data/db
   mongo-express:
     image: mongo-express
     restart: always
@@ -15,9 +15,9 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ../prometheus-data:/prometheus-data
+      - ./prometheus-data:/prometheus-data
     command:
-      - '--config.file=../prometheus-data/prometheus.yml'
+      - '--config.file=/prometheus-data/prometheus.yml'
     ports:
       - 9090:9090
     restart: always
@@ -26,3 +26,22 @@ services:
     ports:
       - 9080:3000
     restart: always
+  backend:
+    image: practicasdesachinwenwenchas/backend
+    restart: always
+    environment: 
+      - MONGO_URL=mongodb://mongo:27017/industrial-revolution
+      - PORT=3001
+    ports: 
+      - 3001:3001
+  frontend:
+    image: practicasdesachinwenwenchas/frontend
+    restart: always
+    ports: 
+      - 3000:80
+  reverse-proxy:
+    image: nginx
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+    ports: 
+      - 80:8080
