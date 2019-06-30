@@ -3,19 +3,19 @@ const fromEnvVarOr = (envVar, callback) => {
 }
 
 const environments = {
-  development: () => { 
+  development: () => {
     return {
       mongoUrl: fromEnvVarOr('MONGO_URL', () => 'mongodb://localhost:27017/industrial-revolution-dev'),
       port: fromEnvVarOr('PORT', () => 3001)
     }
   },
-  test: () => { 
+  test: () => {
     return {
       mongoUrl: fromEnvVarOr('MONGO_URL', () => 'mongodb://localhost:27017/industrial-revolution-test'),
       port: fromEnvVarOr('PORT', () => 3001)
     }
   },
-  production: () => { 
+  production: () => {
     return {
       mongoUrl: fromEnvVarOr('MONGO_URL', () => { throw 'Missing mongo url' }),
       port: fromEnvVarOr('PORT', () => { throw 'Missing port' })
