@@ -5,30 +5,38 @@ node_js:
 
 services:
   - mongodb
+  - docker
 
 cache:
   directories:
     - node_modules
 
-script:
-  - cd backend
-  - yarn install
-  - yarn testCI
-  - yarn lint
-  - cd ..
-  - cd frontend
-  - yarn install
-  - yarn lint
-  - "CI=true yarn test"
-  - yarn build
-
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $github_token
-  local_dir: frontend/build
-  on:
-    branch: master
+jobs:
+  include:
+    - stage: "Test"
+      name: "Backend"
+      script:
+        - cd backend
+        - yarn install
+        - yarn testCI
+        - yarn lint
+        - cd ..
+    - script:
+        - cd frontend
+        - yarn install
+        - yarn lint
+        - "CI=true yarn test"
+        - "cd .."
+      name: "Frontend"
+    - stage: "Build"
+      if: branch = master
+      name: "Backend y Frontend"
+      script:
+        - docker build --file=frontend/docker/Dockerfile ./frontend --tag practicasdesachinwenwenchas/frontend:latest
+        - docker build --file=backend/docker/Dockerfile ./backend --tag practicasdesachinwenwenchas/backend:latest
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push practicasdesachinwenwenchas/frontend:latest
+        - docker push practicasdesachinwenwenchas/backend:latest
 
 notifications:
   email:

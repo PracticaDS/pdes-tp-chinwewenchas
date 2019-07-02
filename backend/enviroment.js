@@ -1,16 +1,30 @@
+const fromEnvVarOr = (envVar, callback) => {
+  return process.env[envVar] || callback()
+}
+
 const environments = {
-  development: {
-    mongoUrl: 'mongodb://localhost:27017/industrial-revolution-dev',
-    port: 3001
+  development: () => {
+    return {
+      mongoUrl: fromEnvVarOr('MONGO_URL', () => 'mongodb://localhost:27017/industrial-revolution-dev'),
+      port: fromEnvVarOr('PORT', () => 3001)
+    }
   },
-  test: {
-    mongoUrl: 'mongodb://localhost:27017/industrial-revolution-test',
-    port: 3002
+  test: () => {
+    return {
+      mongoUrl: fromEnvVarOr('MONGO_URL', () => 'mongodb://localhost:27017/industrial-revolution-test'),
+      port: fromEnvVarOr('PORT', () => 3001)
+    }
+  },
+  production: () => {
+    return {
+      mongoUrl: fromEnvVarOr('MONGO_URL', () => { throw 'Missing mongo url' }),
+      port: fromEnvVarOr('PORT', () => { throw 'Missing port' })
+    }
   }
 }
 
 const getEnv = (environment) => {
-  const envObject = environments[environment]
+  const envObject = environments[environment]()
   if (envObject === undefined) {
     throw 'Give me a real environment'
   } else {
