@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start" : "cd backend && yarn start && cd .. && cd frontend && yarn start",
     "precommit-frontend": "cd frontend && yarn prettier && yarn lint:fix",
     "precommit-backend": "cd backend && yarn prettier && yarn lint:fix",
     "precommit-e2e": "cd e2e && yarn prettier && yarn lint:fix"
