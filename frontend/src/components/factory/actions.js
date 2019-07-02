@@ -13,6 +13,7 @@ import {
   REMOVE_MACHINE_ACTION,
   ROTATE_MACHINE_ACTION
 } from './factoryLib'
+import { api } from '../../api'
 
 export const MATERIAL_FOR_STARTER = 'MATERIAL_FOR_STARTER'
 export const materialForStarter = (position, material) => {
@@ -74,7 +75,7 @@ const autosave = () => {
   return (dispatch, getSetate) => {
     const { name, id, ...board } = getSetate().factory
 
-    fetch('http://localhost:3000/api/save', {
+    fetch(api.autoSave, {
       method: 'POST',
       body: JSON.stringify({
         name: name,

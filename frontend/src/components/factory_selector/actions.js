@@ -1,5 +1,6 @@
 import { createFactoryBoard } from '../factory/factoryLib'
 import { factorySelected } from '../factory/actions'
+import { api } from '../../api'
 
 export const FACTORY_NAME_CHANGED = 'FACTORY_NAME_CHANGED'
 export const newFactoryChangeName = newFactoryName => {
@@ -35,7 +36,7 @@ export const setFactories = factories => {
 export const CREATE_FACTORY = 'CREATE_FACTORY'
 export const createFactory = () => {
   return (dispatch, getState) => {
-    fetch('http://localhost:3000/api/new_factory', {
+    fetch(api.newFactory, {
       method: 'POST',
       body: JSON.stringify({
         name: getState().factorySelector.newFactoryName,
